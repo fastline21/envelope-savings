@@ -7,15 +7,27 @@ import { useHistory } from 'react-router-dom';
 // Components
 import PreLoader from './../layout/PreLoader';
 
-const Login = ({ userState: { success, error, loading } }) => {
+// Actions
+import { setAlert } from './../../actions/alertAction';
+import {
+	loginUser,
+	clearSuccess,
+	clearErrors,
+} from './../../actions/userAction';
+
+const Login = ({
+	userState: { success, error, loading },
+	setAlert,
+	loginUser,
+	clearSuccess,
+	clearErrors,
+}) => {
 	const history = useHistory();
 	const initialInfo = {
 		email: '',
 		password: '',
 	};
 	const [info, setInfo] = useState(initialInfo);
-	const [showAlert, setShowAlert] = useState(true);
-	const [customAlert, setCustomAlert] = useState(null);
 	const { email, password } = info;
 	const onChange = (e) => {
 		const { name, value } = e.target;
@@ -31,52 +43,33 @@ const Login = ({ userState: { success, error, loading } }) => {
 			password === null ||
 			password === undefined
 		) {
-			setCustomAlert(
-				<Alert
-					variant='danger'
-					onClose={() => setCustomAlert(null)}
-					dismissible
-				>
-					Please fill in all the required fields.
-				</Alert>
-			);
+			setAlert({
+				type: 'danger',
+				message: 'Please fill in all the required fields.',
+			});
 		} else {
 			const userFields = {
 				email,
 				password,
 			};
-			// registerUser(userFields);
+			loginUser(userFields);
 			setInfo(initialInfo);
-			setShowAlert(true);
-		}
-	};
-	const onLoading = (loading, success, error) => {
-		if (loading) {
-			return <PreLoader />;
-		} else {
-			if (error) {
-				return (
-					<Alert
-						variant='danger'
-						show={showAlert}
-						onClose={() => setShowAlert(false)}
-						dismissible
-					>
-						{error.msg}
-					</Alert>
-				);
-			}
 		}
 	};
 	useEffect(() => {
 		if (success) {
+			clearSuccess();
 			history.push('/dashboard');
+		}
+
+		if (error) {
+			setAlert({ type: 'danger', message: error.msg || error });
+			clearErrors();
 		}
 	}, [loading, error, success]);
 	return (
 		<Container>
-			{customAlert}
-			{onLoading(loading, success, error)}
+			{loading && <PreLoader />}
 			<Row>
 				<Col lg={{ span: 6, offset: 3 }}>
 					<h1>Login</h1>
@@ -84,7 +77,7 @@ const Login = ({ userState: { success, error, loading } }) => {
 						<Form.Group>
 							<Form.Label>Email:</Form.Label>
 							<Form.Control
-								type='text'
+								type='email'
 								placeholder='Enter email'
 								name='email'
 								onChange={onChange}
@@ -113,10 +106,19 @@ const Login = ({ userState: { success, error, loading } }) => {
 
 Login.propTypes = {
 	userState: PropTypes.object.isRequired,
+	setAlert: PropTypes.func.isRequired,
+	loginUser: PropTypes.func.isRequired,
+	clearSuccess: PropTypes.func.isRequired,
+	clearErrors: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	userState: state.userState,
 });
 
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps, {
+	setAlert,
+	clearSuccess,
+	loginUser,
+	clearErrors,
+})(Login);

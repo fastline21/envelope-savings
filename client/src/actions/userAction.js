@@ -6,7 +6,8 @@ import {
 	GET_USER,
 	USER_LOADING,
 	USERS_ERROR,
-	SET_USER_SUCCESS,
+	CLEAR_USER_SUCCESS,
+	CLEAR_USER_ERRORS,
 } from './types';
 
 // Register user
@@ -60,8 +61,15 @@ export const setLoading = () => (dispatch) => {
 };
 
 // Set success to false
-export const setSuccess = () => (dispatch) => {
+export const clearSuccess = () => (dispatch) => {
 	dispatch({
-		type: SET_USER_SUCCESS,
+		type: CLEAR_USER_SUCCESS,
 	});
 };
+
+// Clear errors
+export const clearErrors = () => (dispatch) => {
+	dispatch({
+		type: CLEAR_USER_ERRORS
+	})
+}

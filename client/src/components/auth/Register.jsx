@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 // Actions
-import { registerUser, setSuccess } from './../../actions/userAction';
+import { registerUser, clearSuccess } from './../../actions/userAction';
 
 // Components
 import PreLoader from './../layout/PreLoader';
@@ -12,7 +12,7 @@ import PreLoader from './../layout/PreLoader';
 const Register = ({
 	userState: { success, error, loading },
 	registerUser,
-	setSuccess,
+	clearSuccess,
 }) => {
 	const initialInfo = {
 		fullname: '',
@@ -170,11 +170,13 @@ const Register = ({
 Register.propTypes = {
 	userState: PropTypes.object.isRequired,
 	registerUser: PropTypes.func.isRequired,
-	setSuccess: PropTypes.func.isRequired,
+	clearSuccess: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	userState: state.userState,
 });
 
-export default connect(mapStateToProps, { registerUser, setSuccess })(Register);
+export default connect(mapStateToProps, { registerUser, clearSuccess })(
+	Register
+);
