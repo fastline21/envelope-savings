@@ -48,12 +48,16 @@ router.post('/', async (req, res) => {
 			verificationToken,
 		});
 		const compose = `
-		Thank you for register in Envelope Savings App.
+		Thank you for register in Envelope Savings.
 		<br /><br />
-		Click the below link to verify your account.
+		Please verify your email by clicking the link below.
 		<br />
-		Verify Link: <a href="http://localhost:3000/verify/${verificationToken}" target="_blank">Verify Account</a>
+		<a href="http://localhost:3000/verify/${verificationToken}" target="_blank">Verify Account</a>
 		<br /><br />
+		If you cannot click on the link, copy and paste this link in your browser.
+		<br />
+		<a href="http://localhost:3000/verify/${verificationToken}" target="_blank">http://localhost:3000/verify/${verificationToken}</a>
+		<br />
 		Thank you
 		<br />
 		Envelope Savings Dev

@@ -1,28 +1,33 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 // Actions
-import { registerUser, clearSuccess } from './../../actions/userAction';
+import {
+	registerUser,
+	clearSuccess,
+	clearErrors,
+} from "./../../actions/userAction";
+import { setAlert } from "./../../actions/alertAction";
 
 // Components
-import PreLoader from './../layout/PreLoader';
+import PreLoader from "./../layout/PreLoader";
 
 const Register = ({
 	userState: { success, error, loading },
+	setAlert,
 	registerUser,
 	clearSuccess,
+	clearErrors,
 }) => {
 	const initialInfo = {
-		fullname: '',
-		email: '',
-		password: '',
-		password2: '',
+		fullname: "",
+		email: "",
+		password: "",
+		password2: "",
 	};
 	const [info, setInfo] = useState(initialInfo);
-	const [showAlert, setShowAlert] = useState(true);
-	const [customAlert, setCustomAlert] = useState(null);
 	const { fullname, email, password, password2 } = info;
 	const onChange = (e) => {
 		const { name, value } = e.target;
@@ -30,40 +35,26 @@ const Register = ({
 	};
 	const onSubmit = (e) => {
 		e.preventDefault();
-		setCustomAlert(null);
 		if (
-			fullname === '' ||
+			fullname === "" ||
 			fullname === null ||
 			fullname === undefined ||
-			email === '' ||
+			email === "" ||
 			email === null ||
 			email === undefined ||
-			password === '' ||
+			password === "" ||
 			password === null ||
 			password === undefined ||
-			password2 === '' ||
+			password2 === "" ||
 			password2 === null ||
 			password2 === undefined
 		) {
-			setCustomAlert(
-				<Alert
-					variant='danger'
-					onClose={() => setCustomAlert(null)}
-					dismissible
-				>
-					Please fill in all the required fields.
-				</Alert>
-			);
+			setAlert({
+				type: "danger",
+				message: "Please fill in all the required fields.",
+			});
 		} else if (password !== password2) {
-			setCustomAlert(
-				<Alert
-					variant='danger'
-					onClose={() => setCustomAlert(null)}
-					dismissible
-				>
-					Password not match.
-				</Alert>
-			);
+			setAlert({ type: "danger", message: "Password not match." });
 		} else {
 			const userFields = {
 				fullname,
@@ -73,46 +64,26 @@ const Register = ({
 			};
 			registerUser(userFields);
 			setInfo(initialInfo);
-			setShowAlert(true);
 		}
 	};
-	const onLoading = (loading, success, error) => {
-		if (loading) {
-			return <PreLoader />;
-		} else {
-			if (success) {
-				return (
-					<Alert
-						variant='primary'
-						show={showAlert}
-						onClose={() => setShowAlert(false)}
-						dismissible
-					>
-						Register success
-						<br />
-						Please check your email to verify your account. Thank
-						you.
-					</Alert>
-				);
-			}
-			if (error) {
-				return (
-					<Alert
-						variant='danger'
-						show={showAlert}
-						onClose={() => setShowAlert(false)}
-						dismissible
-					>
-						{error.msg}
-					</Alert>
-				);
-			}
+	useEffect(() => {
+		if (error) {
+			setAlert({ type: "danger", message: error.msg || error });
+			clearErrors();
 		}
-	};
+
+		if (success) {
+			setAlert({
+				type: "primary",
+				message:
+					"Register success. Please check your email to verify your account.",
+			});
+			clearSuccess();
+		}
+	}, [loading, error, success]);
 	return (
 		<Container>
-			{customAlert}
-			{onLoading(loading, success, error)}
+			{loading && <PreLoader />}
 			<Row>
 				<Col lg={{ span: 6, offset: 3 }}>
 					<h1>Register</h1>
@@ -120,9 +91,9 @@ const Register = ({
 						<Form.Group>
 							<Form.Label>Full Name:</Form.Label>
 							<Form.Control
-								type='text'
-								placeholder='Enter full name'
-								name='fullname'
+								type="text"
+								placeholder="Enter full name"
+								name="fullname"
 								onChange={onChange}
 								value={fullname}
 							/>
@@ -130,9 +101,9 @@ const Register = ({
 						<Form.Group>
 							<Form.Label>Email:</Form.Label>
 							<Form.Control
-								type='text'
-								placeholder='Enter email'
-								name='email'
+								type="text"
+								placeholder="Enter email"
+								name="email"
 								onChange={onChange}
 								value={email}
 							/>
@@ -140,9 +111,9 @@ const Register = ({
 						<Form.Group>
 							<Form.Label>Password:</Form.Label>
 							<Form.Control
-								type='password'
-								placeholder='Enter password'
-								name='password'
+								type="password"
+								placeholder="Enter password"
+								name="password"
 								onChange={onChange}
 								value={password}
 							/>
@@ -150,14 +121,14 @@ const Register = ({
 						<Form.Group>
 							<Form.Label>Confirm Password:</Form.Label>
 							<Form.Control
-								type='password'
-								placeholder='Enter confirm password'
-								name='password2'
+								type="password"
+								placeholder="Enter confirm password"
+								name="password2"
 								onChange={onChange}
 								value={password2}
 							/>
 						</Form.Group>
-						<Button variant='primary' type='submit'>
+						<Button variant="primary" type="submit">
 							Submit
 						</Button>
 					</Form>
@@ -169,14 +140,19 @@ const Register = ({
 
 Register.propTypes = {
 	userState: PropTypes.object.isRequired,
+	setAlert: PropTypes.func.isRequired,
 	registerUser: PropTypes.func.isRequired,
 	clearSuccess: PropTypes.func.isRequired,
+	clearErrors: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	userState: state.userState,
 });
 
-export default connect(mapStateToProps, { registerUser, clearSuccess })(
-	Register
-);
+export default connect(mapStateToProps, {
+	setAlert,
+	clearSuccess,
+	registerUser,
+	clearErrors,
+})(Register);
