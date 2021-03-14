@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 // Actions
 import {
 	registerUser,
-	clearSuccess,
+	setSuccess,
 	clearErrors,
 } from "./../../actions/userAction";
 import { setAlert } from "./../../actions/alertAction";
@@ -18,7 +18,7 @@ const Register = ({
 	userState: { success, error, loading },
 	setAlert,
 	registerUser,
-	clearSuccess,
+	setSuccess,
 	clearErrors,
 }) => {
 	const initialInfo = {
@@ -78,7 +78,7 @@ const Register = ({
 				message:
 					"Register success. Please check your email to verify your account.",
 			});
-			clearSuccess();
+			setSuccess();
 		}
 	}, [loading, error, success]);
 	return (
@@ -142,7 +142,7 @@ Register.propTypes = {
 	userState: PropTypes.object.isRequired,
 	setAlert: PropTypes.func.isRequired,
 	registerUser: PropTypes.func.isRequired,
-	clearSuccess: PropTypes.func.isRequired,
+	setSuccess: PropTypes.func.isRequired,
 	clearErrors: PropTypes.func.isRequired,
 };
 
@@ -152,7 +152,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
 	setAlert,
-	clearSuccess,
+	setSuccess,
 	registerUser,
 	clearErrors,
 })(Register);

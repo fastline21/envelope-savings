@@ -1,55 +1,55 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 // Middleware
-const auth = require('./../middleware/auth');
+const auth = require("./../middleware/auth");
 
 // Models
-const Envelope = require('./../models/Envelope');
+const Envelope = require("./../models/Envelope");
 
 // Utils
-const getRandom = require('./../utils/getRandom');
+const getRandom = require("./../utils/getRandom");
 
 // Get all envelopes
-router.get('/', auth, async (req, res) => {
+router.get("/", auth, async (req, res) => {
 	try {
 		const envelope = await Envelope.find({ user: req.user.id });
 		res.json(envelope);
 	} catch (error) {
 		console.error(error.message);
-		res.status(500).send('Server Error');
+		res.status(500).send("Server Error");
 	}
 });
 
 // Get envelope
-router.get('/:id', auth, async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
 	const { id } = req.params;
 	try {
 		const envelope = await Envelope.findById(id);
 		res.json(envelope);
 	} catch (error) {
 		console.error(error.message);
-		res.status(500).send('Server Error');
+		res.status(500).send("Server Error");
 	}
 });
 
 // Create envelope
-router.post('/', auth, async (req, res) => {
+router.post("/", auth, async (req, res) => {
 	const { purpose, deposit, amount } = req.body;
 	if (
 		purpose === undefined ||
 		purpose === null ||
-		purpose === '' ||
+		purpose === "" ||
 		deposit === undefined ||
 		deposit === null ||
-		deposit === '' ||
+		deposit === "" ||
 		amount === undefined ||
 		amount === null ||
-		amount === ''
+		amount === ""
 	) {
 		return res
 			.status(404)
-			.json({ msg: 'Please fill in all the required fields.' });
+			.json({ msg: "Please fill in all the required fields." });
 	}
 	let goalMoney = 0;
 	for (let i = 0; i <= amount; i++) {
@@ -67,27 +67,27 @@ router.post('/', auth, async (req, res) => {
 		res.json(envelope);
 	} catch (error) {
 		console.error(error.message);
-		res.status(500).send('Server Error');
+		res.status(500).send("Server Error");
 	}
 });
 
 // Roll money
-router.put('/:id', auth, async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
 	const { id } = req.params;
 	try {
 		let envelope = await Envelope.findById(id);
 		let random = 0;
 		let isFound = true;
 		do {
-			random = getRandom(envelope['amount']);
-			isFound = envelope['envelopes'].some((env) => env.money === random)
+			random = getRandom(envelope["amount"]);
+			isFound = envelope["envelopes"].some((env) => env.money === random)
 				? true
 				: false;
 		} while (isFound);
 		try {
 			await envelope.updateOne({
 				envelopes: [
-					...envelope['envelopes'],
+					...envelope["envelopes"],
 					{
 						money: random,
 						date: new Date(),
@@ -99,27 +99,27 @@ router.put('/:id', auth, async (req, res) => {
 			res.json(envelope);
 		} catch (error) {
 			console.error(error.message);
-			res.status(500).send('Server Error');
+			res.status(500).send("Server Error");
 		}
 	} catch (error) {
 		console.error(error.message);
-		res.status(500).send('Server Error');
+		res.status(500).send("Server Error");
 	}
 });
 
 // Delete envelope
-router.delete('/:id', auth, async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
 	const { id } = req.params;
 	try {
 		const envelope = await Envelope.findById(id);
 		if (!envelope) {
-			return res.status(404).json({ msg: 'Envelope not found.' });
+			return res.status(404).json({ msg: "Envelope not found." });
 		}
 		await Envelope.findByIdAndDelete(id);
-		res.json({ msg: 'Your envelope is successfully delete.' });
+		res.json({ msg: "Your envelope is successfully delete." });
 	} catch (error) {
 		console.error(error.message);
-		res.status(500).send('Server Error');
+		res.status(500).send("Server Error");
 	}
 });
 

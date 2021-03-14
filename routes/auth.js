@@ -1,37 +1,37 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 // Models
-const User = require('./../models/User');
+const User = require("./../models/User");
 
 // Middleware
-const auth = require('./../middleware/auth');
+const auth = require("./../middleware/auth");
 
 // Login user
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
 	const { email, password } = req.body;
 	if (
 		email === undefined ||
 		email === null ||
-		email === '' ||
+		email === "" ||
 		password === undefined ||
 		password === null ||
-		password === ''
+		password === ""
 	) {
 		return res
 			.status(404)
-			.json({ msg: 'Please fill in all the required fields.' });
+			.json({ msg: "Please fill in all the required fields." });
 	}
 	try {
 		let user = await User.findOne({ email });
 		if (!user) {
-			return res.status(404).json({ msg: 'User not found.' });
+			return res.status(404).json({ msg: "User not found." });
 		}
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) {
-			return res.status(400).json({ msg: 'Invalid Credentials' });
+			return res.status(400).json({ msg: "Invalid Credentials" });
 		}
 		const payload = {
 			user: {
@@ -44,20 +44,20 @@ router.post('/', async (req, res) => {
 		});
 	} catch (error) {
 		console.error(error.message);
-		res.status(500).send('Server Error');
+		res.status(500).send("Server Error");
 	}
 });
 
 // Logged user
-router.get('/', auth, async (req, res) => {
+router.get("/", auth, async (req, res) => {
 	try {
 		const user = await User.findById(req.user.id).select(
-			'-password -date -username'
+			"-password -date -username"
 		);
 		res.json(user);
 	} catch (error) {
 		console.error(error.message);
-		res.status(500).send('Server Error');
+		res.status(500).send("Server Error");
 	}
 });
 
