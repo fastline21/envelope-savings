@@ -14,7 +14,7 @@ import {
 import setAuthToken from "./../utils/setAuthToken";
 
 // User logged
-export const loadUser = async (dispatch) => {
+export const loadUser = () => async (dispatch) => {
 	setAuthToken(localStorage.token);
 	try {
 		const res = await axios.get("/api/auth");
@@ -65,7 +65,7 @@ export const loginUser = (user) => async (dispatch) => {
 			type: LOGIN_USER,
 			payload: res.data,
 		});
-		loadUser(dispatch);
+		loadUser()(dispatch);
 	} catch (error) {
 		dispatch({
 			type: USERS_ERROR,

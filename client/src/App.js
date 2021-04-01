@@ -10,6 +10,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import AlertMsg from "./components/layout/AlertMsg";
 import Dashboard from "./components/dashboard/Dashboard";
+import LoadUser from "./components/auth/LoadUser";
 
 // Routing
 import PrivateRoute from "./components/routing/PrivateRoute";
@@ -17,6 +18,7 @@ import PrivateRoute from "./components/routing/PrivateRoute";
 const App = () => {
 	return (
 		<Provider store={store}>
+			<LoadUser />
 			<BrowserRouter>
 				<Fragment>
 					<Header />
