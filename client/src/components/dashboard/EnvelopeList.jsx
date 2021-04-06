@@ -1,8 +1,19 @@
 import React from "react";
 import { Table } from "react-bootstrap";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-const EnvelopeList = () => {
-	return (
+// Components
+import PreLoader from "./../layout/PreLoader";
+
+const EnvelopeList = ({ envelopeState: { envelopes, loading } }) => {
+	if (envelopes === null || loading) {
+		return <PreLoader />;
+	}
+
+	return envelopes.length === 0 ? (
+		<p>No envelope found</p>
+	) : (
 		<Table>
 			<thead>
 				<tr>
@@ -16,4 +27,12 @@ const EnvelopeList = () => {
 	);
 };
 
-export default EnvelopeList;
+EnvelopeList.propTypes = {
+	envelopeState: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+	envelopeState: state.envelopeState,
+});
+
+export default connect(mapStateToProps)(EnvelopeList);
