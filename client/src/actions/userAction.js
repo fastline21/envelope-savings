@@ -89,14 +89,14 @@ export const setLoading = (dispatch) => {
 };
 
 // Clear errors
-export const clearErrors = (dispatch) => {
+export const clearErrors = () => (dispatch) => {
 	dispatch({
 		type: CLEAR_USER_ERRORS,
 	});
 };
 
 // Set register success to false
-export const setSuccess = (dispatch) => {
+export const setSuccess = () => (dispatch) => {
 	dispatch({
 		type: SET_SUCCESS_USER,
 	});
