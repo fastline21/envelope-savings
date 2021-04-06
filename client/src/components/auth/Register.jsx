@@ -80,6 +80,7 @@ const Register = ({
 			});
 			setSuccess();
 		}
+		// eslint-disable-next-line
 	}, [loading, error, success]);
 	return (
 		<Container>
