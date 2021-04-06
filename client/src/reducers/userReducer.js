@@ -42,7 +42,7 @@ export default (state = initialState, action) => {
 				loading: false,
 				user: null,
 				error: null,
-				isAuthenticated: true,
+				isAuthenticated: false,
 				loading: false,
 			};
 		case USER_LOADING:

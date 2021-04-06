@@ -75,7 +75,7 @@ export const loginUser = (user) => async (dispatch) => {
 };
 
 // Logout user
-export const logoutUser = (dispatch) => {
+export const logoutUser = () => (dispatch) => {
 	dispatch({
 		type: LOGOUT_USER,
 	});
