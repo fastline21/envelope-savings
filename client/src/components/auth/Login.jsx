@@ -60,6 +60,7 @@ const Login = ({
 			setAlert({ type: "danger", message: error.msg || error });
 			clearErrors();
 		}
+		// eslint-disable-next-line
 	}, [loading, error, isAuthenticated]);
 	return (
 		<Container>

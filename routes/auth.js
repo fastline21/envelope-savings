@@ -61,4 +61,27 @@ router.get("/", auth, async (req, res) => {
 	}
 });
 
+// Verify user
+router.put("/verify/:token", async (req, res) => {
+	const { token } = req.params;
+	let user = await User.findOne({
+		verificationToken: token,
+		isVerify: false,
+	});
+
+	if (!user) {
+		return res.status(404).json({ msg: "No user found." });
+	}
+
+	try {
+		user.verificationToken = "";
+		user.isVerify = true;
+		await user.save();
+
+		return res.send(user);
+	} catch (error) {
+		console.log(error.message);
+	}
+});
+
 module.exports = router;
