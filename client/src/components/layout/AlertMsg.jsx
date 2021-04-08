@@ -1,15 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Alert } from 'react-bootstrap';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { Alert } from "react-bootstrap";
 
 // Actions
-import { setAlert } from './../../actions/alertAction';
+import { setAlert } from "./../../actions/alertAction";
 
-const AlertMsg = ({ alertState: { type, message }, setAlert }) => {
+const AlertMsg = ({
+	alertState: { type, message, isModal },
+	setAlert,
+	isModalShow = false,
+}) => {
 	return (
-		type !== null &&
-		message !== null && (
+		(type !== null && message !== null && !isModal) ||
+		(isModalShow && (
 			<Alert
 				variant={type}
 				onClose={() => setAlert({ type: null, message: null })}
@@ -17,7 +21,7 @@ const AlertMsg = ({ alertState: { type, message }, setAlert }) => {
 			>
 				{message}
 			</Alert>
-		)
+		))
 	);
 };
 
