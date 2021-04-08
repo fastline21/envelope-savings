@@ -10,3 +10,8 @@ export const SET_SUCCESS_USER = "SET_SUCCESS_USER";
 
 // Alert
 export const SET_ALERT = "SET_ALERT";
+
+// Envelope
+export const GET_ALL_ENVELOPES = "GET_ALL_ENVELOPES";
+export const ENVELOPES_ERROR = "ENVELOPES_ERROR";
+export const ENVELOPE_LOADING = "ENVELOPE_LOADING";
