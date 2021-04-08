@@ -65,7 +65,6 @@ const EnvelopeModal = ({ showModal, hideModal, setAlert }) => {
 		if (showModal !== "view") {
 			return (
 				<Form onSubmit={onSubmit}>
-					{/* <AlertMsg /> */}
 					<Modal.Body>
 						<Form.Group controlId="purposeInput">
 							<Form.Label>Purpose:</Form.Label>

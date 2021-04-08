@@ -6,14 +6,10 @@ import { Alert } from "react-bootstrap";
 // Actions
 import { setAlert } from "./../../actions/alertAction";
 
-const AlertMsg = ({
-	alertState: { type, message, isModal },
-	setAlert,
-	isModalShow = false,
-}) => {
+const AlertMsg = ({ alertState: { type, message }, setAlert }) => {
 	return (
-		(type !== null && message !== null && !isModal) ||
-		(isModalShow && (
+		type !== null &&
+		message !== null && (
 			<Alert
 				variant={type}
 				onClose={() => setAlert({ type: null, message: null })}
@@ -21,7 +17,7 @@ const AlertMsg = ({
 			>
 				{message}
 			</Alert>
-		))
+		)
 	);
 };
 
