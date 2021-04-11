@@ -41,7 +41,6 @@ const Login = ({
 			setAlert({
 				type: "danger",
 				message: "Please fill in all the required fields.",
-				isModal: false,
 			});
 		} else {
 			const userFields = {
@@ -59,6 +58,7 @@ const Login = ({
 
 		if (error) {
 			setAlert({ type: "danger", message: error.msg || error });
+			localStorage.clear();
 			clearErrors();
 		}
 		// eslint-disable-next-line
