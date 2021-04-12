@@ -6,12 +6,14 @@ import PropTypes from "prop-types";
 import { loadUser } from "./../../actions/userAction";
 
 const LoadUser = ({ loadUser }) => {
-	const token = localStorage.token;
 	useEffect(() => {
-		if (token) {
+		if (localStorage.token) {
 			loadUser();
+			return null;
 		}
+		// eslint-disable-next-line
 	}, []);
+
 	return null;
 };
 

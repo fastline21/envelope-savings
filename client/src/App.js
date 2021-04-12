@@ -20,9 +20,9 @@ import PrivateRoute from "./components/routing/PrivateRoute";
 const App = () => {
 	return (
 		<Provider store={store}>
-			<LoadUser />
 			<BrowserRouter>
 				<Fragment>
+					<LoadUser />
 					<Header />
 					<AlertMsg />
 					<Switch>
