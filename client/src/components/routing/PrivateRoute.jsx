@@ -1,37 +1,30 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-// Actions
-import { loadUser } from "./../../actions/userAction";
-import { setAlert } from "../../actions/alertAction";
-
 // Components
-import LoadUser from "./../auth/LoadUser";
 import PreLoader from "./../layout/PreLoader";
 
+// Actions
+import { loadUser } from "./../../actions/userAction";
+
 const PrivateRoute = ({
-	userState: { isAuthenticated, loading, error },
+	userState: { isAuthenticated, loading },
 	loadUser,
 	component: Component,
 	...rest
 }) => {
-	if (loading) {
-		return <PreLoader />;
-	}
-	if (error) {
-		return <Redirect to="/login" />;
-	}
-
 	return (
 		<Route
 			{...rest}
 			render={(props) =>
-				!localStorage.token ? (
-					<Redirect to="/login" />
+				loading ? (
+					<PreLoader />
+				) : isAuthenticated ? (
+					<Component {...props} />
 				) : (
-					isAuthenticated && <Component {...props} />
+					<Redirect to="/login" />
 				)
 			}
 		/>
@@ -41,11 +34,10 @@ const PrivateRoute = ({
 PrivateRoute.propTypes = {
 	userState: PropTypes.object.isRequired,
 	loadUser: PropTypes.func.isRequired,
-	setAlert: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	userState: state.userState,
 });
 
-export default connect(mapStateToProps, { loadUser, setAlert })(PrivateRoute);
+export default connect(mapStateToProps, { loadUser })(PrivateRoute);

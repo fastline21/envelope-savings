@@ -18,7 +18,6 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-	console.log(action.type);
 	switch (action.type) {
 		case USER_LOADED:
 			return {
@@ -44,7 +43,6 @@ export default (state = initialState, action) => {
 				user: null,
 				error: null,
 				isAuthenticated: false,
-				loading: false,
 			};
 		case USER_LOADING:
 			return {

@@ -23,7 +23,9 @@ const EnvelopeModal = ({ showModal, hideModal, setAlert }) => {
 	};
 
 	// Open modal
-	const handleShow = () => setShow(true);
+	const handleShow = () => {
+		setShow(true);
+	};
 
 	// Initial state value
 	const initialInfo = {

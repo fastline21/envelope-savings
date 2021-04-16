@@ -9,7 +9,6 @@ const LoadUser = ({ loadUser }) => {
 	useEffect(() => {
 		if (localStorage.token) {
 			loadUser();
-			return null;
 		}
 		// eslint-disable-next-line
 	}, []);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { Button } from "react-bootstrap";
 
 // Components
@@ -6,9 +6,10 @@ import EnvelopeModal from "./EnvelopeModal";
 
 const EnvelopeActions = () => {
 	const [showModal, setShowModal] = useState(null);
+
 	return (
-		<>
-			{showModal !== null && (
+		<Fragment>
+			{showModal && (
 				<EnvelopeModal
 					showModal={showModal}
 					hideModal={() => setShowModal(null)}
@@ -36,7 +37,7 @@ const EnvelopeActions = () => {
 			<Button variant="danger" size="lg" block>
 				Delete
 			</Button>
-		</>
+		</Fragment>
 	);
 };
 
