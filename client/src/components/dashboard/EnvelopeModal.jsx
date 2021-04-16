@@ -8,11 +8,18 @@ import stringCapitilized from "./../../utils/stringCapitalized";
 
 // Actions
 import { setAlert } from "./../../actions/alertAction";
+import { addEnvelope } from "./../../actions/envelopeAction";
 
 // Components
-import AlertMsg from "./../layout/AlertMsg";
+// import AlertMsg from "./../layout/AlertMsg";
 
-const EnvelopeModal = ({ showModal, hideModal, setAlert }) => {
+const EnvelopeModal = ({
+	showModal,
+	hideModal,
+	setAlert,
+	addEnvelope,
+	envelopeState: { envelopes },
+}) => {
 	// State for showing modal
 	const [show, setShow] = useState(false);
 
@@ -34,6 +41,8 @@ const EnvelopeModal = ({ showModal, hideModal, setAlert }) => {
 		deposit: "",
 		goalMoney: 0,
 	};
+
+	const [envelopeList, setEnvelopeList] = useState([]);
 
 	// Info state
 	const [info, setInfo] = useState(initialInfo);
@@ -128,11 +137,19 @@ const EnvelopeModal = ({ showModal, hideModal, setAlert }) => {
 		e.preventDefault();
 
 		if (!purpose || !amount || !deposit || !goalMoney) {
-			setAlert({
-				type: "danger",
-				message: "Please fill in all the required fields.",
-				isModal: true,
-			});
+			// setAlert({
+			// 	type: "danger",
+			// 	message: "Please fill in all the required fields.",
+			// 	isModal: true,
+			// });
+
+			// Temp show error
+			alert("Please fill in all the required fields.");
+		}
+
+		if (showModal === "add") {
+			addEnvelope({ purpose, amount, deposit });
+			setInfo(initialInfo);
 		}
 	};
 
@@ -140,20 +157,30 @@ const EnvelopeModal = ({ showModal, hideModal, setAlert }) => {
 		// Show Envelope Modal
 		if (showModal) {
 			handleShow();
+			setEnvelopeList(envelopes);
 		}
 
-		// Set Goal Money when amount input change it's value
-		const setGoalMoney = () => {
-			let goal = 0;
-			for (let i = 0; i <= amount; i++) {
-				goal += i;
-			}
-			setInfo({ ...info, goalMoney: goal });
-		};
-		setGoalMoney();
+		if (amount) {
+			// Set Goal Money when amount input change it's value
+			const setGoalMoney = () => {
+				let goal = 0;
+				for (let i = 0; i <= amount; i++) {
+					goal += i;
+				}
+				setInfo({ ...info, goalMoney: goal });
+			};
+			setGoalMoney();
+		}
+
+		if (JSON.stringify(envelopes) !== JSON.stringify(envelopeList)) {
+			handleClose();
+			// alert("yes");
+		}
+		// console.log("envelopes", envelopes);
+		// console.log("envelopeList", envelopeList);
 
 		// eslint-disable-next-line
-	}, [showModal, amount]);
+	}, [showModal, amount, envelopes, envelopeList]);
 
 	return (
 		<Modal show={show} onHide={handleClose}>
@@ -177,7 +204,15 @@ const EnvelopeModal = ({ showModal, hideModal, setAlert }) => {
 };
 
 EnvelopeModal.propTypes = {
+	envelopeState: PropTypes.object.isRequired,
 	setAlert: PropTypes.func.isRequired,
+	addEnvelope: PropTypes.func.isRequired,
 };
 
-export default connect(null, { setAlert })(EnvelopeModal);
+const mapStateToProps = (state) => ({
+	envelopeState: state.envelopeState,
+});
+
+export default connect(mapStateToProps, { setAlert, addEnvelope })(
+	EnvelopeModal
+);

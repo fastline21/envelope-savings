@@ -2,12 +2,15 @@ import {
 	GET_ALL_ENVELOPES,
 	ENVELOPES_ERROR,
 	ENVELOPE_LOADING,
+	ADD_ENVELOPE,
+	SELECTED_ENVELOPE,
 } from "./../actions/types";
 
 const initialState = {
 	envelopes: null,
 	loading: false,
 	error: null,
+	selected: null,
 };
 
 export default (state = initialState, action) => {
@@ -17,6 +20,16 @@ export default (state = initialState, action) => {
 				...state,
 				envelopes: action.payload,
 				loading: false,
+			};
+		case ADD_ENVELOPE:
+			return {
+				...state,
+				envelopes: [...state.envelopes, action.payload],
+			};
+		case SELECTED_ENVELOPE:
+			return {
+				...state,
+				selected: action.payload,
 			};
 		case ENVELOPE_LOADING:
 			return {

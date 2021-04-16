@@ -1,10 +1,12 @@
 import React, { useState, Fragment } from "react";
 import { Button } from "react-bootstrap";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 // Components
 import EnvelopeModal from "./EnvelopeModal";
 
-const EnvelopeActions = () => {
+const EnvelopeActions = ({ envelopeState: { selected } }) => {
 	const [showModal, setShowModal] = useState(null);
 
 	return (
@@ -20,6 +22,7 @@ const EnvelopeActions = () => {
 				size="lg"
 				block
 				onClick={() => setShowModal("view")}
+				disabled={!selected ? true : false}
 			>
 				View
 			</Button>
@@ -28,17 +31,36 @@ const EnvelopeActions = () => {
 				size="lg"
 				block
 				onClick={() => setShowModal("add")}
+				disabled={selected ? true : false}
 			>
 				Add
 			</Button>
-			<Button variant="warning" size="lg" block>
+			<Button
+				variant="warning"
+				size="lg"
+				block
+				disabled={selected ? true : false}
+			>
 				Edit
 			</Button>
-			<Button variant="danger" size="lg" block>
+			<Button
+				variant="danger"
+				size="lg"
+				block
+				disabled={selected ? true : false}
+			>
 				Delete
 			</Button>
 		</Fragment>
 	);
 };
 
-export default EnvelopeActions;
+EnvelopeActions.propTypes = {
+	envelopeState: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+	envelopeState: state.envelopeState,
+});
+
+export default connect(mapStateToProps)(EnvelopeActions);
