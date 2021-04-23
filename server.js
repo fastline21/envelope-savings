@@ -1,12 +1,9 @@
-const express = require("express");
-const helmet = require("helmet");
-const cors = require("cors");
-const db = require("./config/db");
-const session = require("express-session");
-const path = require("path");
-
-// Load env file
-require("dotenv").config();
+const express = require('express');
+const helmet = require('helmet');
+const cors = require('cors');
+const db = require('./config/db');
+const session = require('express-session');
+const path = require('path');
 
 // Init app
 const app = express();
@@ -15,7 +12,7 @@ const app = express();
 db();
 
 // Init helmet
-// app.use(helmet());
+app.use(helmet());
 
 // Init cors
 app.use(cors());
@@ -26,22 +23,22 @@ app.use(express.json({ extended: true }));
 // Express session
 app.use(
 	session({
-		secret: "secret",
+		secret: 'secret',
 		resave: true,
 		saveUninitialized: true,
 	})
 );
 
 // API route
-app.use("/api", require("./routes/index"));
+app.use('/api', require('./routes'));
 
 // Serve static assets in production
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === 'production') {
 	// Set static folder
-	app.use(express.static("client/build"));
+	app.use(express.static('client/build'));
 
-	app.get("*", (req, res) =>
-		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+	app.get('*', (req, res) =>
+		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
 	);
 }
 
