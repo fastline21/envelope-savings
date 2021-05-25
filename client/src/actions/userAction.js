@@ -49,6 +49,7 @@ export const loginUser = (user) => async (dispatch) => {
             type: LOGIN_USER,
             payload: res.data,
         });
+        loadUser()(dispatch);
     } catch (error) {
         dispatch({
             type: USERS_ERROR,

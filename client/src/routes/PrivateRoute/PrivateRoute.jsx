@@ -20,6 +20,7 @@ const PrivateRoute = ({
 }) => {
 	const [isLoading, setIsLoading] = useState(true);
 
+	// 1st run
 	useEffect(() => {
 		if (isLoading) {
 			if (localStorage.token) {
@@ -31,6 +32,7 @@ const PrivateRoute = ({
 		// eslint-disable-next-line
 	}, []);
 
+	// 2nd run
 	useEffect(() => {
 		if (isLoading && !loading) {
 			setInterval(() => {
