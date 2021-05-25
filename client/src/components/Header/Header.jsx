@@ -15,15 +15,12 @@ const Header = () => {
 						<Nav.Link exact as={NavLink} to='/'>
 							Home
 						</Nav.Link>
-						<Nav.Link as={NavLink} to='/login'>
-							Login
+						<Nav.Link as={NavLink} to='/about'>
+							About
 						</Nav.Link>
-						<Nav.Link as={NavLink} to='/register'>
-							Register
-						</Nav.Link>
-						<Nav.Link as={NavLink} to='/dashboard'>
+						{/* <Nav.Link as={NavLink} to='/dashboard'>
 							Dashboard
-						</Nav.Link>
+						</Nav.Link> */}
 					</Nav>
 				</Navbar.Collapse>
 			</Navbar>
