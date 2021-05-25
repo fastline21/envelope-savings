@@ -9,12 +9,14 @@ import Login from './containers/Login';
 
 // Components
 import Header from './components/Header';
+import Alert from './components/Alert';
 
 const App = () => {
 	return (
 		<Provider store={configureStore}>
 			<BrowserRouter>
 				<Fragment>
+					<Alert />
 					<Header />
 					<Switch>
 						<Route exact path='/' component={Home} />
