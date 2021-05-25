@@ -49,7 +49,7 @@ router.post("/", auth, async (req, res) => {
 	) {
 		return res
 			.status(404)
-			.json({ msg: "Please fill in all the required fields." });
+			.json({ message: "Please fill in all the required fields." });
 	}
 	let goalMoney = 0;
 	for (let i = 0; i <= amount; i++) {
@@ -113,10 +113,10 @@ router.delete("/:id", auth, async (req, res) => {
 	try {
 		const envelope = await Envelope.findById(id);
 		if (!envelope) {
-			return res.status(404).json({ msg: "Envelope not found." });
+			return res.status(404).json({ message: "Envelope not found." });
 		}
 		await Envelope.findByIdAndDelete(id);
-		res.json({ msg: "Your envelope is successfully delete." });
+		res.json({ message: "Your envelope is successfully delete." });
 	} catch (error) {
 		console.error(error.message);
 		res.status(500).send("Server Error");

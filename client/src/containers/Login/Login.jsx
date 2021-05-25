@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 
 // Actions
 import { loginUser } from './../../actions/userAction';
@@ -12,6 +13,8 @@ const Login = ({
 	setAlert,
 	userState: { user, loading, error },
 }) => {
+	const history = useHistory();
+
 	const initialFormData = {
 		email: '',
 		password: '',
@@ -42,8 +45,16 @@ const Login = ({
 
 	useEffect(() => {
 		if (error) {
-			alert(error.msg);
+			setAlert({
+				...error,
+			});
 		}
+
+		if (user) {
+			history.push('/');
+		}
+
+		// eslint-disable-next-line
 	}, [user, error]);
 
 	return (

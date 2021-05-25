@@ -28,15 +28,15 @@ router.post('/', async (req, res) => {
 	) {
 		return res
 			.status(404)
-			.json({ msg: 'Please fill in all the required fields.' });
+			.json({ message: 'Please fill in all the required fields.' });
 	} else if (password !== password2) {
-		return res.status(400).json({ msg: 'Password not match.' });
+		return res.status(400).json({ message: 'Password not match.' });
 	}
 
 	try {
 		let user = await User.findOne({ email });
 		if (user) {
-			return res.status(400).json({ msg: 'User already registered.' });
+			return res.status(400).json({ message: 'User already registered.' });
 		}
 		const salt = await bcrypt.genSalt(10);
 		const newPassword = await bcrypt.hash(String(password), salt);
@@ -70,10 +70,10 @@ router.post('/', async (req, res) => {
 				'Register',
 				compose
 			);
-			res.json({ msg: 'Register user success.' });
+			res.json({ message: 'Register user success.' });
 		} catch (error) {
 			console.error('error:', error);
-			res.status(error.responseCode).json({ msg: error.response });
+			res.status(error.responseCode).json({ message: error.response });
 		}
 	} catch (error) {
 		console.error(error.message);

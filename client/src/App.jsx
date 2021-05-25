@@ -11,6 +11,9 @@ import Login from './containers/Login';
 import Header from './components/Header';
 import Alert from './components/Alert';
 
+// Routes
+import PrivateRoute from './routes/PrivateRoute';
+
 const App = () => {
 	return (
 		<Provider store={configureStore}>
@@ -19,7 +22,7 @@ const App = () => {
 					<Alert />
 					<Header />
 					<Switch>
-						<Route exact path='/' component={Home} />
+						<PrivateRoute exact path='/' component={Home} />
 						<Route path='/login' component={Login} />
 					</Switch>
 				</Fragment>

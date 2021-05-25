@@ -5,6 +5,7 @@ export const LOGOUT_USER = "LOGOUT_USER";
 export const USER_LOADING = "USER_LOADING";
 export const USERS_ERROR = "USERS_ERROR";
 export const CLEAR_USER_ERRORS = "CLEAR_USER_ERRORS";
+export const USER_LOADED = 'USER_LOADED';
 
 // Alert
 export const SET_ALERT = "SET_ALERT";

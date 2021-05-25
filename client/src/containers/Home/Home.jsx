@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 
-const Home = ({ setLoading }) => {
+const Home = () => {
 	return (
 		<Container className='text-center'>
 			<h1>Home</h1>

@@ -22,16 +22,16 @@ router.post("/", async (req, res) => {
 	) {
 		return res
 			.status(404)
-			.json({ msg: "Please fill in all the required fields." });
+			.json({ message: "Please fill in all the required fields." });
 	}
 	try {
 		let user = await User.findOne({ email });
 		if (!user) {
-			return res.status(404).json({ msg: "User not found." });
+			return res.status(404).json({ message: "User not found." });
 		}
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) {
-			return res.status(400).json({ msg: "Invalid Credentials" });
+			return res.status(400).json({ message: "Invalid Credentials" });
 		}
 		const payload = {
 			user: {
@@ -70,7 +70,7 @@ router.put("/verify/:token", async (req, res) => {
 	});
 
 	if (!user) {
-		return res.status(404).json({ msg: "No user found." });
+		return res.status(404).json({ message: "No user found." });
 	}
 
 	try {
