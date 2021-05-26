@@ -18,15 +18,13 @@ const PrivateRoute = ({
 	component: Component,
 	...rest
 }) => {
-	const [isLoading, setIsLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(null);
 
 	// 1st run
 	useEffect(() => {
-		if (isLoading) {
-			if (localStorage.token) {
-				return loadUser();
-			}
-			setIsLoading(false);
+		if (localStorage.token) {
+			setIsLoading(true);
+			return loadUser();
 		}
 
 		// eslint-disable-next-line
@@ -43,9 +41,11 @@ const PrivateRoute = ({
 		// eslint-disable-next-line
 	}, [loading]);
 
-	return isLoading ? (
-		<PreLoader />
-	) : (
+	if (isLoading) {
+		return <PreLoader />;
+	}
+
+	return (
 		<Route
 			{...rest}
 			render={(props) =>
