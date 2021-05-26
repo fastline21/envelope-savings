@@ -1,2 +1,3 @@
-# envelope-savings
+# Envelope Savings
+
 Manage your own envelope savings online.
