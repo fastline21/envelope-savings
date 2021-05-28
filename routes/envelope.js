@@ -36,17 +36,7 @@ router.get("/:id", auth, async (req, res) => {
 // Create envelope
 router.post("/", auth, async (req, res) => {
 	const { purpose, deposit, amount } = req.body;
-	if (
-		purpose === undefined ||
-		purpose === null ||
-		purpose === "" ||
-		deposit === undefined ||
-		deposit === null ||
-		deposit === "" ||
-		amount === undefined ||
-		amount === null ||
-		amount === ""
-	) {
+	if (!purpose || !deposit || !amount) {
 		return res
 			.status(404)
 			.json({ message: "Please fill in all the required fields." });
@@ -66,8 +56,8 @@ router.post("/", auth, async (req, res) => {
 		const envelope = await newEnvelope.save();
 		res.json(envelope);
 	} catch (error) {
-		console.error(error.message);
-		res.status(500).send("Server Error");
+		console.error('error:', error);
+		res.status(error.responseCode).json({ message: error.response });
 	}
 });
 

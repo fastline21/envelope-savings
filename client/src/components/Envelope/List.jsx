@@ -4,8 +4,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-const List = ({ envelopeState: { envelopes } }) => {
-	return envelopes ? (
+const List = ({
+	setCurrentEnvelope,
+	envelopeState: { envelopes, current },
+	listRef,
+}) => {
+	return envelopes.length !== 0 ? (
 		<Table responsive hover className='envelope-list'>
 			<thead>
 				<tr>
@@ -15,19 +19,21 @@ const List = ({ envelopeState: { envelopes } }) => {
 					<th>Date</th>
 				</tr>
 			</thead>
-			<tbody>
-				{envelopes.map((e, i) => (
+			<tbody ref={listRef}>
+				{envelopes.map((element, index) => (
 					<tr
-						key={i}
-						// onClick={() => onClick(e._id)}
-						// className={`${
-						// 	selected === e._id && 'bg-primary text-white'
-						// }`}
+						key={index}
+						onClick={() => setCurrentEnvelope(element._id)}
+						className={`${
+							current === element._id && 'bg-primary text-white'
+						}`}
 					>
-						<th>{i + 1}</th>
-						<td>{e.purpose}</td>
-						<td>{e.goalMoney.toLocaleString()}</td>
-						<td>{moment(e.dateCreated).format('MMMM DD YYYY')}</td>
+						<th>{index + 1}</th>
+						<td>{element.purpose}</td>
+						<td>{element.goalMoney.toLocaleString()}</td>
+						<td>
+							{moment(element.dateCreated).format('MMMM DD YYYY')}
+						</td>
 					</tr>
 				))}
 			</tbody>

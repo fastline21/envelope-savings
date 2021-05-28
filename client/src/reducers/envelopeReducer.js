@@ -26,6 +26,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 envelopes: [...state.envelopes, action.payload],
+                loading: false
             };
         case CURRENT_ENVELOPE:
             return {

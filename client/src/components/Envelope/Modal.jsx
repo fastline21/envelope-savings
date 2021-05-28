@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Modal as BModal, Button, Form } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 // Utils
-import getGoalMoney from 'utils/getGoalMoney';
+import { getGoalMoney, stringCapitalized } from 'utils';
 
-const Modal = ({ showModal, hideModal }) => {
+// Actions
+import { setAlert } from 'actions/alertAction';
+import { addEnvelope } from 'actions/envelopeAction';
+
+const Modal = ({
+	showModal,
+	hideModal,
+	setAlert,
+	addEnvelope,
+	envelopeState: { envelopes, loading },
+}) => {
 	const [isShow, setIsShow] = useState(false);
 
 	const initialFormData = {
@@ -15,27 +27,19 @@ const Modal = ({ showModal, hideModal }) => {
 	};
 	const [formData, setFormData] = useState(initialFormData);
 
+	const [envelopeList, setEnvelopeList] = useState(null);
+
 	const { purpose, amount, deposit, goalMoney } = formData;
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 
 		if (name === 'amount') {
-			try {
-				setFormData({
-					...formData,
-					[name]: parseInt(value),
-					goalMoney: getGoalMoney(value),
-				});
-			} catch (error) {
-				setFormData({
-					...formData,
-					[name]: '',
-					goalMoney: 0,
-				});
-			}
-
-			return;
+			return setFormData({
+				...formData,
+				[name]: parseInt(value),
+				goalMoney: getGoalMoney(value),
+			});
 		}
 
 		setFormData({ ...formData, [name]: value });
@@ -44,7 +48,7 @@ const Modal = ({ showModal, hideModal }) => {
 	const formRender = () => {
 		if (showModal !== 'view') {
 			return (
-				<Form onSubmit={onSubmit}>
+				<Form onSubmit={handleSubmit}>
 					<BModal.Body>
 						<Form.Group controlId='purposeInput'>
 							<Form.Label>Purpose:</Form.Label>
@@ -92,7 +96,6 @@ const Modal = ({ showModal, hideModal }) => {
 			);
 		}
 
-		// This return is for view showModal
 		return (
 			<div>
 				<label htmlFor=''>Purpose</label>
@@ -101,25 +104,23 @@ const Modal = ({ showModal, hideModal }) => {
 		);
 	};
 
-	// Form Submit
-	const onSubmit = (e) => {
-		e.preventDefault();
+	const handleSubmit = (event) => {
+		event.preventDefault();
 
-		// if (!purpose || !amount || !deposit || !goalMoney) {
-		// 	// setAlert({
-		// 	// 	type: "danger",
-		// 	// 	message: "Please fill in all the required fields.",
-		// 	// 	isModal: true,
-		// 	// });
+		if (!purpose || !amount || !deposit || !goalMoney) {
+			return setAlert({
+				statusCode: 404,
+				message: 'Please fill in all the required fields.',
+			});
+		}
 
-		// 	// Temp show error
-		// 	alert('Please fill in all the required fields.');
-		// }
-
-		// if (showModal === 'add') {
-		// 	addEnvelope({ purpose, amount, deposit });
-		// 	setInfo(initialInfo);
-		// }
+		if (showModal === 'add') {
+			addEnvelope({
+				purpose,
+				amount,
+				deposit,
+			});
+		}
 	};
 
 	const handleShow = () => {
@@ -127,6 +128,7 @@ const Modal = ({ showModal, hideModal }) => {
 	};
 
 	const handleClose = () => {
+		setFormData(initialFormData);
 		hideModal();
 		setIsShow(false);
 	};
@@ -139,23 +141,42 @@ const Modal = ({ showModal, hideModal }) => {
 		// eslint-disable-next-line
 	}, []);
 
+	useEffect(() => {
+		if (envelopeList === null) {
+			setEnvelopeList(envelopes);
+		}
+
+		if (
+			envelopes !== null &&
+			envelopeList !== null &&
+			JSON.stringify(envelopes) !== JSON.stringify(envelopeList)
+		) {
+			handleClose();
+		}
+
+		// eslint-disable-next-line
+	}, [envelopes, envelopeList]);
+
 	return (
 		<BModal show={isShow} onHide={handleClose}>
 			<BModal.Header closeButton>
-				<BModal.Title></BModal.Title>
+				<BModal.Title>{stringCapitalized(showModal)}</BModal.Title>
 			</BModal.Header>
 			{formRender()}
-			{/* <BModal.Body></BModal.Body>
-			<BModal.Footer>
-				<Button variant='secondary' onClick={handleClose}>
-					Close
-				</Button>
-				<Button variant='primary' onClick={handleClose}>
-					Save Changes
-				</Button>
-			</BModal.Footer> */}
 		</BModal>
 	);
 };
 
-export default Modal;
+Modal.propTypes = {
+	alertState: PropTypes.object.isRequired,
+	envelopeState: PropTypes.object.isRequired,
+	setAlert: PropTypes.func.isRequired,
+	addEnvelope: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+	alertState: state.alertState,
+	envelopeState: state.envelopeState,
+});
+
+export default connect(mapStateToProps, { setAlert, addEnvelope })(Modal);

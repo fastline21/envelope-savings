@@ -32,6 +32,8 @@ export const getAllEnvelopes = () => async (dispatch) => {
 };
 
 export const addEnvelope = (envelope) => async (dispatch) => {
+    setLoading(dispatch);
+
     try {
         const config = {
             headers: {
