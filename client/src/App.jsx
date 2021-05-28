@@ -7,6 +7,7 @@ import configureStore from './configureStore';
 import Home from './containers/Home';
 import Login from './containers/Login';
 import Envelope from './containers/Envelope';
+import About from './containers/About';
 
 // Components
 import Header from './components/Header';
@@ -24,6 +25,7 @@ const App = () => {
 					<Header />
 					<Switch>
 						<PrivateRoute exact path='/' component={Home} />
+						<PrivateRoute exact path='/about' component={About} />
 						<Route path='/login' component={Login} />
 						<PrivateRoute path='/:id' component={Envelope} />
 					</Switch>

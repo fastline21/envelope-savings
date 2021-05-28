@@ -5,5 +5,5 @@ import useClickOutside from './useClickOutside';
 export {
     getGoalMoney,
     stringCapitalized,
-    useClickOutside
+    useClickOutside,
 }

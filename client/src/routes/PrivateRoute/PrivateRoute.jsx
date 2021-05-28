@@ -19,16 +19,19 @@ const PrivateRoute = ({
 	...rest
 }) => {
 	const [isLoading, setIsLoading] = useState(null);
-
+	if (localStorage.token && isLoading === null) {
+		setIsLoading(true);
+		loadUser();
+	}
 	// 1st run
-	useEffect(() => {
-		if (localStorage.token) {
-			setIsLoading(true);
-			return loadUser();
-		}
+	// useEffect(() => {
+	// 	if (localStorage.token) {
+	// 		setIsLoading(true);
+	// 		return loadUser();
+	// 	}
 
-		// eslint-disable-next-line
-	}, []);
+	// 	// eslint-disable-next-line
+	// }, []);
 
 	// 2nd run
 	useEffect(() => {

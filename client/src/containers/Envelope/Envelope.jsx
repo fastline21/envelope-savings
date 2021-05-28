@@ -19,8 +19,6 @@ const Envelope = ({ getEnvelope, envelopeState: { envelope } }) => {
 		// eslint-disable-next-line
 	}, []);
 
-	console.log(envelope);
-
 	return (
 		<Container className='pt-5'>
 			<Row>
