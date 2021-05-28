@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 // Actions
 import { getEnvelope } from 'actions/envelopeAction';
+
+import { Table } from 'components/Envelope';
 
 const Envelope = ({ getEnvelope }) => {
 	const { id } = useParams();
@@ -14,7 +16,12 @@ const Envelope = ({ getEnvelope }) => {
 
 		// eslint-disable-next-line
 	}, []);
-	return <h1>Envelope ID: {id}</h1>;
+	return (
+		<Fragment>
+			<h1>Envelope ID: {id}</h1>
+			<Table></Table>
+		</Fragment>
+	);
 };
 
 Envelope.propTypes = {
