@@ -6,6 +6,7 @@ import configureStore from './configureStore';
 // Containers
 import Home from './containers/Home';
 import Login from './containers/Login';
+import Envelope from './containers/Envelope';
 
 // Components
 import Header from './components/Header';
@@ -24,6 +25,7 @@ const App = () => {
 					<Switch>
 						<PrivateRoute exact path='/' component={Home} />
 						<Route path='/login' component={Login} />
+						<Route path='/:id' component={Envelope} />
 					</Switch>
 				</Fragment>
 			</BrowserRouter>

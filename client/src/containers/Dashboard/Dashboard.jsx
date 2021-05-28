@@ -16,7 +16,7 @@ import { useClickOutside } from 'utils';
 const Dashboard = ({
 	getAllEnvelopes,
 	currentEnvelope,
-	envelopeState: { envelopes, current, loading },
+	envelopeState: { envelopes, current },
 }) => {
 	const [exceptionClick, setExceptionClick] = useState(null);
 	useEffect(() => {

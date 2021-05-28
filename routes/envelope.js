@@ -28,8 +28,8 @@ router.get("/:id", auth, async (req, res) => {
 		const envelope = await Envelope.findById(id);
 		res.json(envelope);
 	} catch (error) {
-		console.error(error.message);
-		res.status(500).send("Server Error");
+		console.error('error:', error);
+		res.status(error.responseCode).json({ message: error.response });
 	}
 });
 

@@ -12,6 +12,7 @@ export const SET_ALERT = "SET_ALERT";
 
 // Envelope
 export const GET_ALL_ENVELOPES = "GET_ALL_ENVELOPES";
+export const GET_ENVELOPE = 'GET_ENVELOPE';
 export const ENVELOPES_ERROR = "ENVELOPES_ERROR";
 export const ENVELOPE_LOADING = "ENVELOPE_LOADING";
 export const ADD_ENVELOPE = "ADD_ENVELOPE";

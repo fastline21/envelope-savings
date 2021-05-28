@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal as BModal, Button, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 
 // Utils
 import { getGoalMoney, stringCapitalized } from 'utils';
@@ -9,14 +10,16 @@ import { getGoalMoney, stringCapitalized } from 'utils';
 // Actions
 import { setAlert } from 'actions/alertAction';
 import { addEnvelope } from 'actions/envelopeAction';
+import { Fragment } from 'react';
 
 const Modal = ({
 	showModal,
 	hideModal,
 	setAlert,
 	addEnvelope,
-	envelopeState: { envelopes, loading },
+	envelopeState: { envelopes, current },
 }) => {
+	const history = useHistory();
 	const [isShow, setIsShow] = useState(false);
 
 	const initialFormData = {
@@ -28,6 +31,8 @@ const Modal = ({
 	const [formData, setFormData] = useState(initialFormData);
 
 	const [envelopeList, setEnvelopeList] = useState(null);
+
+	const [currentEnvelope, setCurrentEnvelope] = useState(null);
 
 	const { purpose, amount, deposit, goalMoney } = formData;
 
@@ -46,12 +51,17 @@ const Modal = ({
 	};
 
 	const formRender = () => {
-		if (showModal !== 'view') {
-			return (
-				<Form onSubmit={handleSubmit}>
-					<BModal.Body>
-						<Form.Group controlId='purposeInput'>
-							<Form.Label>Purpose:</Form.Label>
+		return (
+			<Form onSubmit={handleSubmit}>
+				<BModal.Body>
+					<Form.Group controlId='purposeInput'>
+						<Form.Label>Purpose:</Form.Label>
+						<br />
+						{showModal === 'view' ? (
+							<Form.Label>
+								{currentEnvelope && currentEnvelope.purpose}
+							</Form.Label>
+						) : (
 							<Form.Control
 								type='text'
 								name='purpose'
@@ -59,9 +69,16 @@ const Modal = ({
 								value={purpose}
 								onChange={handleChange}
 							/>
-						</Form.Group>
-						<Form.Group controlId='amountInput'>
-							<Form.Label>Amount:</Form.Label>
+						)}
+					</Form.Group>
+					<Form.Group controlId='amountInput'>
+						<Form.Label>Amount:</Form.Label>
+						<br />
+						{showModal === 'view' ? (
+							<Form.Label>
+								{currentEnvelope && currentEnvelope.amount}
+							</Form.Label>
+						) : (
 							<Form.Control
 								type='number'
 								name='amount'
@@ -71,9 +88,18 @@ const Modal = ({
 								min={0}
 								max={10000}
 							/>
-						</Form.Group>
-						<Form.Group controlId='depositInput'>
-							<Form.Label>Deposit:</Form.Label>
+						)}
+					</Form.Group>
+					<Form.Group controlId='depositInput'>
+						<Form.Label>Deposit:</Form.Label>
+						{showModal === 'view' ? (
+							<Fragment>
+								<br />
+								<Form.Label>
+									{currentEnvelope && currentEnvelope.deposit}
+								</Form.Label>
+							</Fragment>
+						) : (
 							<Form.Control
 								type='text'
 								name='deposit'
@@ -81,26 +107,33 @@ const Modal = ({
 								value={deposit}
 								onChange={handleChange}
 							/>
-						</Form.Group>
-						<Form.Group controlId='goalMoneyInput'>
-							<Form.Label>Goal Money:</Form.Label>
-							<p>{goalMoney.toLocaleString()}</p>
-						</Form.Group>
-					</BModal.Body>
-					<BModal.Footer>
+						)}
+					</Form.Group>
+					<Form.Group controlId='goalMoneyInput'>
+						<Form.Label>Goal Money:</Form.Label>
+						<p>
+							{(currentEnvelope && currentEnvelope.goalMoney) ||
+								goalMoney.toLocaleString()}
+						</p>
+					</Form.Group>
+				</BModal.Body>
+				<BModal.Footer>
+					{showModal === 'view' ? (
+						<Button
+							variant='primary'
+							onClick={() =>
+								history.push(`/${currentEnvelope._id}`)
+							}
+						>
+							Load Envelope
+						</Button>
+					) : (
 						<Button variant='primary' type='submit'>
 							Submit
 						</Button>
-					</BModal.Footer>
-				</Form>
-			);
-		}
-
-		return (
-			<div>
-				<label htmlFor=''>Purpose</label>
-				<p>{purpose}</p>
-			</div>
+					)}
+				</BModal.Footer>
+			</Form>
 		);
 	};
 
@@ -143,6 +176,12 @@ const Modal = ({
 
 	useEffect(() => {
 		if (envelopeList === null) {
+			if (showModal === 'view') {
+				setCurrentEnvelope(
+					...envelopes.filter((e) => e._id === current)
+				);
+			}
+
 			setEnvelopeList(envelopes);
 		}
 

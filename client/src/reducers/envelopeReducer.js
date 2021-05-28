@@ -4,10 +4,12 @@ import {
     ENVELOPE_LOADING,
     ADD_ENVELOPE,
     CURRENT_ENVELOPE,
+    GET_ENVELOPE
 } from "./../actions/types";
 
 const initialState = {
     envelopes: null,
+    envelope: null,
     loading: false,
     error: null,
     current: null,
@@ -22,6 +24,11 @@ export default (state = initialState, action) => {
                 envelopes: action.payload,
                 loading: false,
             };
+        case GET_ENVELOPE:
+            return {
+                ...state,
+                envelope: action.payload
+            }
         case ADD_ENVELOPE:
             return {
                 ...state,

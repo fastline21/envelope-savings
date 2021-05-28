@@ -18,7 +18,7 @@ const Action = ({ envelopeState: { current }, showModal, actionEnvelope }) => {
 				variant='primary'
 				size='lg'
 				block
-				// onClick={() => setShowModal('view')}
+				onClick={() => showModal('view')}
 				disabled={!current ? true : false}
 			>
 				View
@@ -36,6 +36,7 @@ const Action = ({ envelopeState: { current }, showModal, actionEnvelope }) => {
 				variant='primary'
 				size='lg'
 				block
+				onClick={() => showModal('edit')}
 				disabled={!current ? true : false}
 			>
 				Edit
@@ -44,6 +45,7 @@ const Action = ({ envelopeState: { current }, showModal, actionEnvelope }) => {
 				variant='primary'
 				size='lg'
 				block
+				onClick={() => showModal('delete')}
 				disabled={!current ? true : false}
 			>
 				Delete

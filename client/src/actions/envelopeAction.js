@@ -6,7 +6,8 @@ import {
     ENVELOPE_LOADING,
     ADD_ENVELOPE,
     CURRENT_ENVELOPE,
-    CLEAR_ENVELOPE_ERRORS
+    CLEAR_ENVELOPE_ERRORS,
+    GET_ENVELOPE
 } from "./types";
 
 export const getAllEnvelopes = () => async (dispatch) => {
@@ -30,6 +31,26 @@ export const getAllEnvelopes = () => async (dispatch) => {
         clearErrors(dispatch);
     }
 };
+
+export const getEnvelope = (id) => async (dispatch) => {
+    try {
+        const res = await axios.get(`/api/envelope/${id}`);
+        dispatch({
+            type: GET_ENVELOPE,
+            payload: res.data,
+        });
+    } catch (error) {
+        dispatch({
+            type: ENVELOPES_ERROR,
+            payload: {
+                statusCode: error.response.status,
+                message: error.response.data.message
+            },
+        });
+
+        clearErrors(dispatch);
+    }
+}
 
 export const addEnvelope = (envelope) => async (dispatch) => {
     setLoading(dispatch);
