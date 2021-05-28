@@ -25,7 +25,7 @@ const App = () => {
 					<Header />
 					<Switch>
 						<PrivateRoute exact path='/' component={Home} />
-						<PrivateRoute exact path='/about' component={About} />
+						<Route exact path='/about' component={About} />
 						<Route path='/login' component={Login} />
 						<PrivateRoute path='/:id' component={Envelope} />
 					</Switch>
