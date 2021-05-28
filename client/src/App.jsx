@@ -25,7 +25,7 @@ const App = () => {
 					<Switch>
 						<PrivateRoute exact path='/' component={Home} />
 						<Route path='/login' component={Login} />
-						<Route path='/:id' component={Envelope} />
+						<PrivateRoute path='/:id' component={Envelope} />
 					</Switch>
 				</Fragment>
 			</BrowserRouter>
