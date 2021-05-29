@@ -86,7 +86,8 @@ router.put("/:id", auth, async (req, res) => {
 				latestEnvelope: { money: random, date: new Date() },
 			});
 			envelope = await Envelope.findById(id);
-			res.json(envelope);
+			console.log(envelope);
+			res.json({ envelope, random });
 		} catch (error) {
 			console.error(error.message);
 			res.status(500).send("Server Error");

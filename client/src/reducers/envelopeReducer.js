@@ -4,7 +4,8 @@ import {
     ENVELOPE_LOADING,
     ADD_ENVELOPE,
     CURRENT_ENVELOPE,
-    GET_ENVELOPE
+    GET_ENVELOPE,
+    ROLL_NUMBER
 } from "./../actions/types";
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
     loading: false,
     error: null,
     current: null,
+    roll: 0
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -40,6 +42,13 @@ export default (state = initialState, action) => {
                 ...state,
                 current: action.payload,
             };
+        case ROLL_NUMBER:
+            console.log(action.payload.envelope);
+            return {
+                ...state,
+                envelope: action.payload.envelope,
+                roll: action.payload.random
+            }
         case ENVELOPE_LOADING:
             return {
                 ...state,

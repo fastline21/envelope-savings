@@ -7,7 +7,8 @@ import {
     ADD_ENVELOPE,
     CURRENT_ENVELOPE,
     CLEAR_ENVELOPE_ERRORS,
-    GET_ENVELOPE
+    GET_ENVELOPE,
+    ROLL_NUMBER
 } from "./types";
 
 export const getAllEnvelopes = () => async (dispatch) => {
@@ -33,6 +34,8 @@ export const getAllEnvelopes = () => async (dispatch) => {
 };
 
 export const getEnvelope = (id) => async (dispatch) => {
+    setLoading(dispatch);
+
     try {
         const res = await axios.get(`/api/envelope/${id}`);
         dispatch({
@@ -85,6 +88,33 @@ export const currentEnvelope = (id) => (dispatch) => {
         payload: id,
     });
 };
+
+export const rollNumber = (id) => async (dispatch) => {
+    // setLoading(dispatch);
+
+    try {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        };
+        const res = await axios.put(`/api/envelope/${id}`, config);
+        dispatch({
+            type: ROLL_NUMBER,
+            payload: res.data,
+        });
+    } catch (error) {
+        dispatch({
+            type: ENVELOPES_ERROR,
+            payload: {
+                statusCode: error.response.status,
+                message: error.response.data.message
+            },
+        });
+
+        clearErrors(dispatch);
+    }
+}
 
 const clearErrors = (dispatch) => {
     dispatch({

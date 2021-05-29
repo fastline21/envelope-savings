@@ -14,7 +14,7 @@ import setAuthToken from "./../utils/setAuthToken";
 
 export const loadUser = () => async (dispatch) => {
     setLoading(dispatch);
-    console.log('yes');
+
     try {
         setAuthToken(localStorage.token);
         const res = await axios.get("/api/auth");

@@ -22,7 +22,12 @@ const PreLoader = () => {
 					transform: 'translate(-50%, -50%)',
 				}}
 			>
-				<Spinner animation='border' variant='primary' role='status'>
+				<Spinner
+					animation='border'
+					style={{ height: '5rem', width: '5rem' }}
+					variant='primary'
+					role='status'
+				>
 					<span className='sr-only'>Loading...</span>
 				</Spinner>
 			</div>

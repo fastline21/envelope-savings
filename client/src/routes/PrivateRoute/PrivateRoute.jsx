@@ -37,7 +37,7 @@ const PrivateRoute = ({
 		if (isLoading && !loading) {
 			setInterval(() => {
 				setIsLoading(false);
-			}, 500);
+			}, 730);
 		}
 
 		// eslint-disable-next-line
