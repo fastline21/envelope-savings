@@ -1,5 +1,6 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import moment from 'moment';
 
 const Table = ({ envelope }) => {
 	const LoadNumber = () => {
@@ -9,16 +10,40 @@ const Table = ({ envelope }) => {
 		const isRollNumber = (rollNumber) =>
 			envelope.envelopes.some((element) => element.money === rollNumber);
 
+		const getDate = (rollNumber) => {
+			const dateRoll = envelope.envelopes.find(
+				(element) => element.money === rollNumber
+			);
+			return dateRoll.date;
+		};
 		for (rollNumber; envelope.amount >= rollNumber; rollNumber++) {
 			render.push(
-				<Col xs={1} key={rollNumber}>
-					<p
-						className={`text-center ${
-							isRollNumber(rollNumber) ? 'text-primary' : ''
-						}`}
+				<Col xs={2} sm={2} md={1} lg={1} xl={1} key={rollNumber}>
+					<OverlayTrigger
+						key='top'
+						placement='top'
+						overlay={
+							isRollNumber(rollNumber) ? (
+								<Tooltip>
+									{moment(getDate(rollNumber)).format(
+										'MMMM DD, YYYY'
+									)}
+								</Tooltip>
+							) : (
+								<span></span>
+							)
+						}
 					>
-						{rollNumber}
-					</p>
+						<p
+							className={`roll-number text-center${
+								isRollNumber(rollNumber)
+									? ' text-white bg-dark'
+									: ''
+							}`}
+						>
+							{rollNumber}
+						</p>
+					</OverlayTrigger>
 				</Col>
 			);
 		}

@@ -23,7 +23,7 @@ const PreLoader = () => {
 				}}
 			>
 				<Spinner
-					animation='border'
+					animation='grow'
 					style={{ height: '5rem', width: '5rem' }}
 					variant='primary'
 					role='status'

@@ -75,6 +75,8 @@ router.put("/:id", auth, async (req, res) => {
 				: false;
 		} while (isFound);
 		try {
+			const totalEnvelope = envelope["envelopes"].length + 1;
+			const totalMoney = envelope["envelopes"].length >= 1 ? envelope["envelopes"].map(envelope => envelope.money).reduce((prev, next) => prev + next) + random : random;
 			await envelope.updateOne({
 				envelopes: [
 					...envelope["envelopes"],
@@ -84,17 +86,18 @@ router.put("/:id", auth, async (req, res) => {
 					},
 				],
 				latestEnvelope: { money: random, date: new Date() },
+				totalEnvelope,
+				totalMoney
 			});
 			envelope = await Envelope.findById(id);
-			console.log(envelope);
 			res.json({ envelope, random });
 		} catch (error) {
 			console.error(error.message);
-			res.status(500).send("Server Error");
+			res.status(error.responseCode).json({ message: error.response });
 		}
 	} catch (error) {
 		console.error(error.message);
-		res.status(500).send("Server Error");
+		res.status(error.responseCode).json({ message: error.response });
 	}
 });
 

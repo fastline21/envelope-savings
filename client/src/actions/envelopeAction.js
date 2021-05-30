@@ -90,7 +90,7 @@ export const currentEnvelope = (id) => (dispatch) => {
 };
 
 export const rollNumber = (id) => async (dispatch) => {
-    // setLoading(dispatch);
+    setLoading(dispatch);
 
     try {
         const config = {

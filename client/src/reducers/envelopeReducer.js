@@ -29,7 +29,8 @@ export default (state = initialState, action) => {
         case GET_ENVELOPE:
             return {
                 ...state,
-                envelope: action.payload
+                envelope: action.payload,
+                loading: false
             }
         case ADD_ENVELOPE:
             return {
@@ -43,11 +44,11 @@ export default (state = initialState, action) => {
                 current: action.payload,
             };
         case ROLL_NUMBER:
-            console.log(action.payload.envelope);
             return {
                 ...state,
                 envelope: action.payload.envelope,
-                roll: action.payload.random
+                roll: action.payload.random,
+                loading: false
             }
         case ENVELOPE_LOADING:
             return {
