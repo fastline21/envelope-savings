@@ -8,7 +8,8 @@ import {
     CURRENT_ENVELOPE,
     CLEAR_ENVELOPE_ERRORS,
     GET_ENVELOPE,
-    ROLL_NUMBER
+    ROLL_NUMBER,
+    CLEAR_CURRENT
 } from "./types";
 
 export const getAllEnvelopes = () => async (dispatch) => {
@@ -88,6 +89,12 @@ export const currentEnvelope = (id) => (dispatch) => {
         payload: id,
     });
 };
+
+export const clearCurrent = () => (dispatch) => {
+    dispatch({
+        type: CLEAR_CURRENT
+    });
+}
 
 export const rollNumber = (id) => async (dispatch) => {
     setLoading(dispatch);

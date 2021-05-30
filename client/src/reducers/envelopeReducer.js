@@ -5,7 +5,8 @@ import {
     ADD_ENVELOPE,
     CURRENT_ENVELOPE,
     GET_ENVELOPE,
-    ROLL_NUMBER
+    ROLL_NUMBER,
+    CLEAR_CURRENT
 } from "./../actions/types";
 
 const initialState = {
@@ -43,6 +44,12 @@ export default (state = initialState, action) => {
                 ...state,
                 current: action.payload,
             };
+        case CLEAR_CURRENT:
+            return {
+                ...state,
+                current: null,
+                envelope: null
+            }
         case ROLL_NUMBER:
             return {
                 ...state,

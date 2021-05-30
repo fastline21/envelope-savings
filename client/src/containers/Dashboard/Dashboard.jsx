@@ -8,7 +8,11 @@ import { List, Action, Modal } from './../../components/Envelope';
 import PreLoader from 'components/PreLoader';
 
 // Actions
-import { getAllEnvelopes, currentEnvelope } from 'actions/envelopeAction';
+import {
+	getAllEnvelopes,
+	currentEnvelope,
+	clearCurrent,
+} from 'actions/envelopeAction';
 
 // Utils
 import { useClickOutside } from 'utils';
@@ -16,9 +20,10 @@ import { useClickOutside } from 'utils';
 const Dashboard = ({
 	getAllEnvelopes,
 	currentEnvelope,
+	clearCurrent,
 	envelopeState: { envelopes, current },
 }) => {
-	const [exceptionClick, setExceptionClick] = useState(null);
+	const [exceptionClick, setExceptionClick] = useState([]);
 	useEffect(() => {
 		getAllEnvelopes();
 
@@ -33,14 +38,14 @@ const Dashboard = ({
 
 	const handleCurrent = (id) => {
 		if (current === id) {
-			return currentEnvelope(null);
+			return clearCurrent();
 		}
 
 		currentEnvelope(id);
 	};
 
 	const handleClickOutside = useClickOutside(exceptionClick, () => {
-		currentEnvelope(null);
+		clearCurrent();
 	});
 
 	if (envelopes === null) {
@@ -52,7 +57,13 @@ const Dashboard = ({
 			{showModal && (
 				<Modal
 					showModal={showModal}
-					hideModal={() => handleModal(null)}
+					hideModal={() => {
+						handleModal(null);
+						clearCurrent();
+					}}
+					actionEnvelope={({ current }) =>
+						setExceptionClick([...exceptionClick, current])
+					}
 				/>
 			)}
 			<Row>
@@ -66,7 +77,7 @@ const Dashboard = ({
 					<Action
 						showModal={(action) => handleModal(action)}
 						actionEnvelope={({ current }) =>
-							setExceptionClick(current)
+							setExceptionClick([...exceptionClick, current])
 						}
 					/>
 				</Col>
@@ -79,12 +90,15 @@ Dashboard.propTypes = {
 	envelopeState: PropTypes.object.isRequired,
 	getAllEnvelopes: PropTypes.func.isRequired,
 	currentEnvelope: PropTypes.func.isRequired,
+	clearCurrent: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	envelopeState: state.envelopeState,
 });
 
-export default connect(mapStateToProps, { getAllEnvelopes, currentEnvelope })(
-	Dashboard
-);
+export default connect(mapStateToProps, {
+	getAllEnvelopes,
+	currentEnvelope,
+	clearCurrent,
+})(Dashboard);

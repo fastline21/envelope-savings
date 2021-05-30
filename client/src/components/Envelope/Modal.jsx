@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Modal as BModal, Button, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -9,7 +9,7 @@ import { getGoalMoney, stringCapitalized } from 'utils';
 
 // Actions
 import { setAlert } from 'actions/alertAction';
-import { addEnvelope } from 'actions/envelopeAction';
+import { addEnvelope, getEnvelope } from 'actions/envelopeAction';
 import { Fragment } from 'react';
 
 const Modal = ({
@@ -17,8 +17,11 @@ const Modal = ({
 	hideModal,
 	setAlert,
 	addEnvelope,
-	envelopeState: { envelopes, current },
+	getEnvelope,
+	actionEnvelope,
+	envelopeState: { envelopes, current, envelope },
 }) => {
+	const actionEnvelopeRef = useRef();
 	const history = useHistory();
 	const [isShow, setIsShow] = useState(false);
 
@@ -112,8 +115,11 @@ const Modal = ({
 					<Form.Group controlId='goalMoneyInput'>
 						<Form.Label>Goal Money:</Form.Label>
 						<p>
-							{(currentEnvelope && currentEnvelope.goalMoney) ||
-								goalMoney.toLocaleString()}
+							{
+								// currentEnvelope && currentEnvelope.goalMoney
+								//  ||
+								goalMoney.toLocaleString()
+							}
 						</p>
 					</Form.Group>
 				</BModal.Body>
@@ -167,6 +173,8 @@ const Modal = ({
 	};
 
 	useEffect(() => {
+		actionEnvelope(actionEnvelopeRef);
+
 		if (showModal) {
 			handleShow();
 		}
@@ -182,6 +190,10 @@ const Modal = ({
 				);
 			}
 
+			if (current) {
+				getEnvelope(current);
+			}
+
 			setEnvelopeList(envelopes);
 		}
 
@@ -194,10 +206,22 @@ const Modal = ({
 		}
 
 		// eslint-disable-next-line
-	}, [envelopes, envelopeList]);
+	}, [envelopes, envelopeList, current]);
+
+	useEffect(() => {
+		if (envelope) {
+			setFormData({
+				purpose: envelope.purpose,
+				amount: envelope.amount,
+				deposit: envelope.deposit,
+				goalMoney: envelope.goalMoney,
+			});
+		}
+		// eslint-disable-next-line
+	}, [envelope]);
 
 	return (
-		<BModal show={isShow} onHide={handleClose}>
+		<BModal show={isShow} onHide={handleClose} ref={actionEnvelopeRef}>
 			<BModal.Header closeButton>
 				<BModal.Title>{stringCapitalized(showModal)}</BModal.Title>
 			</BModal.Header>
@@ -211,6 +235,7 @@ Modal.propTypes = {
 	envelopeState: PropTypes.object.isRequired,
 	setAlert: PropTypes.func.isRequired,
 	addEnvelope: PropTypes.func.isRequired,
+	getEnvelope: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -218,4 +243,6 @@ const mapStateToProps = (state) => ({
 	envelopeState: state.envelopeState,
 });
 
-export default connect(mapStateToProps, { setAlert, addEnvelope })(Modal);
+export default connect(mapStateToProps, { setAlert, addEnvelope, getEnvelope })(
+	Modal
+);

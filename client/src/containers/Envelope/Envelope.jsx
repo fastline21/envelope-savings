@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 
 // Actions
-import { getEnvelope, rollNumber } from 'actions/envelopeAction';
+import {
+	getEnvelope,
+	rollNumber,
+	currentEnvelope,
+} from 'actions/envelopeAction';
 import { setAlert } from 'actions/alertAction';
 
 // Components
@@ -23,11 +27,13 @@ const Envelope = ({
 	getEnvelope,
 	rollNumber,
 	setAlert,
+	currentEnvelope,
 	envelopeState: { envelope, roll, loading },
 }) => {
 	const { id } = useParams();
 
 	useEffect(() => {
+		currentEnvelope(id);
 		getEnvelope(id);
 
 		// eslint-disable-next-line
@@ -110,12 +116,16 @@ Envelope.propTypes = {
 	getEnvelope: PropTypes.func.isRequired,
 	rollNumber: PropTypes.func.isRequired,
 	setAlert: PropTypes.func.isRequired,
+	currentEnvelope: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	envelopeState: state.envelopeState,
 });
 
-export default connect(mapStateToProps, { getEnvelope, rollNumber, setAlert })(
-	Envelope
-);
+export default connect(mapStateToProps, {
+	getEnvelope,
+	rollNumber,
+	setAlert,
+	currentEnvelope,
+})(Envelope);
