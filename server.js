@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('./config/db');
 const session = require('express-session');
+const cors = require('cors');
 const path = require('path');
 
 // Init app
@@ -8,6 +9,9 @@ const app = express();
 
 // Init database
 db();
+
+// Init cors
+app.use(cors());
 
 // Middleware
 app.use(express.json({ extended: true }));
