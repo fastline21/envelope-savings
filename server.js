@@ -12,7 +12,11 @@ const app = express();
 db();
 
 // Init helmet
-app.use(helmet());
+app.use(helmet({
+	frameguard: {
+		action: 'deny'
+	}
+}));
 
 // Init cors
 app.use(cors());
