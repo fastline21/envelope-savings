@@ -1,24 +1,13 @@
 const express = require('express');
-const helmet = require('helmet');
-const cors = require('cors');
 const db = require('./config/db');
 const session = require('express-session');
 const path = require('path');
-const morgan = require('morgan');
 
 // Init app
 const app = express();
 
 // Init database
 db();
-
-// Init helmet
-app.use(helmet());
-
-// Init cors
-app.use(cors());
-
-app.use(morgan('dev'));
 
 // Middleware
 app.use(express.json({ extended: true }));
