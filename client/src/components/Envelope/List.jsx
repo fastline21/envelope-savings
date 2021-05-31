@@ -16,6 +16,7 @@ const List = ({
 					<th>#</th>
 					<th>Purpose</th>
 					<th>Goal Money</th>
+					<th>Status</th>
 					<th>Date</th>
 				</tr>
 			</thead>
@@ -31,6 +32,7 @@ const List = ({
 						<th>{index + 1}</th>
 						<td>{element.purpose}</td>
 						<td>{element.goalMoney.toLocaleString()}</td>
+						<td>{element.status}</td>
 						<td>
 							{moment(element.dateCreated).format('MMMM DD YYYY')}
 						</td>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Fragment } from 'react';
 import { Modal as BModal, Button, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -9,8 +9,12 @@ import { getGoalMoney, stringCapitalized } from 'utils';
 
 // Actions
 import { setAlert } from 'actions/alertAction';
-import { addEnvelope, getEnvelope } from 'actions/envelopeAction';
-import { Fragment } from 'react';
+import {
+	addEnvelope,
+	getEnvelope,
+	editEnvelope,
+	deleteEnvelope,
+} from 'actions/envelopeAction';
 
 const Modal = ({
 	showModal,
@@ -19,7 +23,9 @@ const Modal = ({
 	addEnvelope,
 	getEnvelope,
 	actionEnvelope,
-	envelopeState: { envelopes, current, envelope },
+	editEnvelope,
+	deleteEnvelope,
+	envelopeState: { envelopes, current, envelope, error },
 }) => {
 	const actionEnvelopeRef = useRef();
 	const history = useHistory();
@@ -54,6 +60,28 @@ const Modal = ({
 	};
 
 	const formRender = () => {
+		if (showModal === 'delete') {
+			return (
+				<Form onSubmit={handleSubmit}>
+					<BModal.Body>
+						<Form.Group>
+							<Form.Label>
+								Are you sure you want to delete {purpose}
+							</Form.Label>
+						</Form.Group>
+					</BModal.Body>
+					<BModal.Footer>
+						<Button variant='primary' onClick={() => handleClose()}>
+							No
+						</Button>
+						<Button variant='primary' type='submit'>
+							Yes
+						</Button>
+					</BModal.Footer>
+				</Form>
+			);
+		}
+
 		return (
 			<Form onSubmit={handleSubmit}>
 				<BModal.Body>
@@ -114,13 +142,7 @@ const Modal = ({
 					</Form.Group>
 					<Form.Group controlId='goalMoneyInput'>
 						<Form.Label>Goal Money:</Form.Label>
-						<p>
-							{
-								// currentEnvelope && currentEnvelope.goalMoney
-								//  ||
-								goalMoney.toLocaleString()
-							}
-						</p>
+						<p>{goalMoney.toLocaleString()}</p>
 					</Form.Group>
 				</BModal.Body>
 				<BModal.Footer>
@@ -154,11 +176,26 @@ const Modal = ({
 		}
 
 		if (showModal === 'add') {
-			addEnvelope({
+			return addEnvelope({
 				purpose,
 				amount,
 				deposit,
 			});
+		}
+
+		if (showModal === 'edit') {
+			return editEnvelope(
+				{
+					purpose,
+					amount,
+					deposit,
+				},
+				{ current }
+			);
+		}
+
+		if (showModal === 'delete') {
+			return deleteEnvelope(current);
 		}
 	};
 
@@ -220,6 +257,16 @@ const Modal = ({
 		// eslint-disable-next-line
 	}, [envelope]);
 
+	useEffect(() => {
+		if (error) {
+			setAlert({
+				...error,
+			});
+		}
+
+		// eslint-disable-next-line
+	}, [error]);
+
 	return (
 		<BModal show={isShow} onHide={handleClose} ref={actionEnvelopeRef}>
 			<BModal.Header closeButton>
@@ -236,6 +283,8 @@ Modal.propTypes = {
 	setAlert: PropTypes.func.isRequired,
 	addEnvelope: PropTypes.func.isRequired,
 	getEnvelope: PropTypes.func.isRequired,
+	editEnvelope: PropTypes.func.isRequired,
+	deleteEnvelope: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -243,6 +292,10 @@ const mapStateToProps = (state) => ({
 	envelopeState: state.envelopeState,
 });
 
-export default connect(mapStateToProps, { setAlert, addEnvelope, getEnvelope })(
-	Modal
-);
+export default connect(mapStateToProps, {
+	setAlert,
+	addEnvelope,
+	getEnvelope,
+	editEnvelope,
+	deleteEnvelope,
+})(Modal);

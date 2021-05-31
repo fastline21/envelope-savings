@@ -9,7 +9,9 @@ import {
     CLEAR_ENVELOPE_ERRORS,
     GET_ENVELOPE,
     ROLL_NUMBER,
-    CLEAR_CURRENT
+    CLEAR_CURRENT,
+    EDIT_ENVELOPE,
+    DELETE_ENVELOPE
 } from "./types";
 
 export const getAllEnvelopes = () => async (dispatch) => {
@@ -83,6 +85,60 @@ export const addEnvelope = (envelope) => async (dispatch) => {
     }
 };
 
+export const editEnvelope = (envelope, id) => async (dispatch) => {
+    setLoading(dispatch);
+
+    try {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        const res = await axios.put(`/api/envelope/${id.current}`, envelope, config);
+        dispatch({
+            type: EDIT_ENVELOPE,
+            payload: res.data,
+        });
+    } catch (error) {
+        dispatch({
+            type: ENVELOPES_ERROR,
+            payload: {
+                statusCode: error.response.status,
+                message: error.response.data.message
+            },
+        });
+
+        clearErrors(dispatch);
+    }
+}
+
+export const deleteEnvelope = (id) => async (dispatch) => {
+    setLoading(dispatch);
+
+    try {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        const res = await axios.delete(`/api/envelope/${id}`, config);
+        dispatch({
+            type: DELETE_ENVELOPE,
+            payload: res.data,
+        });
+    } catch (error) {
+        dispatch({
+            type: ENVELOPES_ERROR,
+            payload: {
+                statusCode: error.response.status,
+                message: error.response.data.message
+            },
+        });
+
+        clearErrors(dispatch);
+    }
+}
+
 export const currentEnvelope = (id) => (dispatch) => {
     dispatch({
         type: CURRENT_ENVELOPE,
@@ -105,7 +161,7 @@ export const rollNumber = (id) => async (dispatch) => {
                 "Content-Type": "application/json",
             }
         };
-        const res = await axios.put(`/api/envelope/${id}`, config);
+        const res = await axios.patch(`/api/envelope/${id}`, config);
         dispatch({
             type: ROLL_NUMBER,
             payload: res.data,

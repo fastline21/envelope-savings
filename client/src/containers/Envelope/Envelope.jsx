@@ -40,7 +40,7 @@ const Envelope = ({
 	}, []);
 
 	useEffect(() => {
-		if (envelope && envelope.envelopes.length === envelope.amount) {
+		if (envelope && envelope.status === 'Complete') {
 			setAlert({
 				statusCode: 200,
 				message: 'Congrats! You complete your goal!',

@@ -6,7 +6,9 @@ import {
     CURRENT_ENVELOPE,
     GET_ENVELOPE,
     ROLL_NUMBER,
-    CLEAR_CURRENT
+    CLEAR_CURRENT,
+    EDIT_ENVELOPE,
+    DELETE_ENVELOPE
 } from "./../actions/types";
 
 const initialState = {
@@ -39,6 +41,18 @@ export default (state = initialState, action) => {
                 envelopes: [...state.envelopes, action.payload],
                 loading: false
             };
+        case EDIT_ENVELOPE:
+            return {
+                ...state,
+                envelopes: action.payload,
+                loading: false
+            }
+        case DELETE_ENVELOPE:
+            return {
+                ...state,
+                envelopes: action.payload,
+                loading: false
+            }
         case CURRENT_ENVELOPE:
             return {
                 ...state,
