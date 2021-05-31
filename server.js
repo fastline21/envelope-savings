@@ -8,18 +8,14 @@ const path = require('path');
 // Init app
 const app = express();
 
-// Init database
-db();
-
 // Init helmet
-app.use(helmet({
-	frameguard: {
-		action: 'deny'
-	}
-}));
+app.use(helmet());
 
 // Init cors
 app.use(cors());
+
+// Init database
+db();
 
 // Middleware
 app.use(express.json({ extended: true }));
