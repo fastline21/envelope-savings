@@ -5,14 +5,10 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 
 // Actions
-import { loginUser } from './../../actions/userAction';
-import { setAlert } from './../../actions/alertAction';
+import { loginUser } from 'actions/userAction';
+import { setAlert } from 'actions/alertAction';
 
-const Login = ({
-	loginUser,
-	setAlert,
-	userState: { user, loading, error },
-}) => {
+const Login = ({ loginUser, setAlert, userState: { user, error } }) => {
 	const history = useHistory();
 
 	const initialFormData = {

@@ -4,13 +4,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 // Actions
-import { loadUser } from './../../actions/userAction';
-
-// Containers
-import Dashboard from './../../containers/Dashboard';
+import { loadUser } from 'actions/userAction';
 
 // Components
-import PreLoader from './../../components/PreLoader';
+import PreLoader from 'components/PreLoader';
 
 const PrivateRoute = ({
 	loadUser,
@@ -54,6 +51,8 @@ const PrivateRoute = ({
 			render={
 				(props) =>
 					user ? <Component {...props} /> : <Redirect to='/login' />
+
+				// TODO: Check this code for feature version
 				// user ? (
 				// 	Component.name === 'Home' ? (
 				// 		<Dashboard />

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -10,15 +10,31 @@ import { logoutUser, loadUser } from 'actions/userAction';
 import PreLoader from 'components/PreLoader';
 
 const Header = ({ userState: { user, loading }, logoutUser, loadUser }) => {
+	const [isLoading, setIsLoading] = useState(null);
+
+	if (localStorage.token && isLoading === null && !user) {
+		setIsLoading(true);
+	}
+
 	useEffect(() => {
-		if (!user && localStorage.token) {
+		if (isLoading) {
 			loadUser();
 		}
 
 		// eslint-disable-next-line
-	}, [user]);
+	}, [isLoading]);
 
-	if (loading) {
+	useEffect(() => {
+		if (isLoading && !loading) {
+			setInterval(() => {
+				setIsLoading(false);
+			}, 730);
+		}
+
+		// eslint-disable-next-line
+	}, [loading]);
+
+	if (isLoading) {
 		return <PreLoader />;
 	}
 
