@@ -35,7 +35,7 @@ const App = () => {
 							component={Dashboard}
 						/>
 						<PrivateRoute
-							path='/dashboard:id'
+							path='/dashboard/:id'
 							component={Envelope}
 						/>
 						<Route path='*' component={NotFound} />

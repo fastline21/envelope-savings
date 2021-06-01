@@ -150,7 +150,9 @@ const Modal = ({
 						<Button
 							variant='primary'
 							onClick={() =>
-								history.push(`/${currentEnvelope._id}`)
+								history.push(
+									`/dashboard/${currentEnvelope._id}`
+								)
 							}
 						>
 							Load Envelope
