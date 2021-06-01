@@ -8,10 +8,12 @@ import Home from './containers/Home';
 import Login from './containers/Login';
 import Envelope from './containers/Envelope';
 import About from './containers/About';
+import Dashboard from 'containers/Dashboard';
 
 // Components
 import Header from './components/Header';
 import Alert from './components/Alert';
+import NotFound from 'components/NotFound';
 
 // Routes
 import PrivateRoute from './routes/PrivateRoute';
@@ -24,10 +26,19 @@ const App = () => {
 					<Alert />
 					<Header />
 					<Switch>
-						<PrivateRoute exact path='/' component={Home} />
-						<Route exact path='/about' component={About} />
+						<Route exact path='/' component={Home} />
+						<Route path='/about' component={About} />
 						<Route path='/login' component={Login} />
-						<PrivateRoute path='/:id' component={Envelope} />
+						<PrivateRoute
+							exact
+							path='/dashboard'
+							component={Dashboard}
+						/>
+						<PrivateRoute
+							path='/dashboard:id'
+							component={Envelope}
+						/>
+						<Route path='*' component={NotFound} />
 					</Switch>
 				</Fragment>
 			</BrowserRouter>

@@ -51,7 +51,7 @@ const Login = ({
 		}
 
 		if (user) {
-			history.push('/');
+			history.push('/dashboard');
 		}
 
 		// eslint-disable-next-line

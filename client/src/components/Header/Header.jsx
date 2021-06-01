@@ -1,13 +1,27 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 // Actions
-import { logoutUser } from './../../actions/userAction';
+import { logoutUser, loadUser } from 'actions/userAction';
 
-const Header = ({ userState: { user }, logoutUser }) => {
+import PreLoader from 'components/PreLoader';
+
+const Header = ({ userState: { user, loading }, logoutUser, loadUser }) => {
+	useEffect(() => {
+		if (!user && localStorage.token) {
+			loadUser();
+		}
+
+		// eslint-disable-next-line
+	}, [user]);
+
+	if (loading) {
+		return <PreLoader />;
+	}
+
 	return (
 		<Fragment>
 			<Navbar bg='light' expand='lg'>
@@ -19,7 +33,7 @@ const Header = ({ userState: { user }, logoutUser }) => {
 					<Nav className='ml-auto'>
 						{user ? (
 							<Fragment>
-								<Nav.Link as={NavLink} to='/'>
+								<Nav.Link exact as={NavLink} to='/dashboard'>
 									Dashboard
 								</Nav.Link>
 								<Nav.Link
@@ -50,10 +64,11 @@ const Header = ({ userState: { user }, logoutUser }) => {
 Header.propTypes = {
 	userState: PropTypes.object.isRequired,
 	logoutUser: PropTypes.func.isRequired,
+	loadUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	userState: state.userState,
 });
 
-export default connect(mapStateToProps, { logoutUser })(Header);
+export default connect(mapStateToProps, { logoutUser, loadUser })(Header);

@@ -19,14 +19,15 @@ const PrivateRoute = ({
 	...rest
 }) => {
 	const [isLoading, setIsLoading] = useState(null);
+
 	if (localStorage.token && isLoading === null) {
 		setIsLoading(true);
 	}
+
 	// 1st run
 	useEffect(() => {
 		if (isLoading) {
-			loadUser();
-			return;
+			return loadUser();
 		}
 
 		// eslint-disable-next-line
@@ -50,18 +51,20 @@ const PrivateRoute = ({
 	return (
 		<Route
 			{...rest}
-			render={(props) =>
-				user ? (
-					Component.name === 'Home' ? (
-						<Dashboard />
-					) : (
-						<Component {...props} />
-					)
-				) : Component.name === 'Home' ? (
-					<Component {...props} />
-				) : (
-					<Redirect to='/login' />
-				)
+			render={
+				(props) =>
+					user ? <Component {...props} /> : <Redirect to='/login' />
+				// user ? (
+				// 	Component.name === 'Home' ? (
+				// 		<Dashboard />
+				// 	) : (
+				// 		<Component {...props} />
+				// 	)
+				// ) : Component.name === 'Home' ? (
+				// 	<Component {...props} />
+				// ) : (
+				// 	<Redirect to='/login' />
+				// )
 			}
 		/>
 	);
