@@ -6,7 +6,9 @@ import {
     USERS_ERROR,
     CLEAR_USER_ERRORS,
     USER_LOADED,
-    LOGOUT_USER
+    LOGOUT_USER,
+    REGISTER_USER,
+    CLEAR_USER_SUCCESS
 } from './types';
 
 // Utils
@@ -63,6 +65,35 @@ export const loginUser = (user) => async (dispatch) => {
     }
 }
 
+export const registerUser = (user) => async (dispatch) => {
+    setLoading(dispatch);
+
+    try {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        const res = await axios.post("/api/user", user, config);
+        dispatch({
+            type: REGISTER_USER,
+            payload: res.data,
+        });
+
+        clearSuccess(dispatch);
+    } catch (error) {
+        dispatch({
+            type: USERS_ERROR,
+            payload: {
+                statusCode: error.response.status,
+                message: error.response.data.message
+            },
+        });
+
+        clearErrors(dispatch);
+    }
+}
+
 export const logoutUser = () => (dispatch) => {
     dispatch({
         type: LOGOUT_USER,
@@ -78,5 +109,11 @@ const clearErrors = (dispatch) => {
 const setLoading = (dispatch) => {
     dispatch({
         type: USER_LOADING
+    });
+}
+
+const clearSuccess = (dispatch) => {
+    dispatch({
+        type: CLEAR_USER_SUCCESS
     });
 }

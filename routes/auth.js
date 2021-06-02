@@ -29,6 +29,10 @@ router.post("/", async (req, res) => {
 		if (!user) {
 			return res.status(404).json({ message: "User not found." });
 		}
+
+		if (!user.isVerify) {
+			return res.status(400).json({ message: 'Please verify your account by clicking the link in your email.' })
+		}
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) {
 			return res.status(400).json({ message: "Invalid Credentials" });

@@ -9,6 +9,7 @@ import Login from './containers/Login';
 import Envelope from './containers/Envelope';
 import About from './containers/About';
 import Dashboard from 'containers/Dashboard';
+import Register from 'containers/Register';
 
 // Components
 import Header from './components/Header';
@@ -28,6 +29,7 @@ const App = () => {
 					<Switch>
 						<Route exact path='/' component={Home} />
 						<Route path='/about' component={About} />
+						<Route path='/register' component={Register} />
 						<Route path='/login' component={Login} />
 						<PrivateRoute
 							exact

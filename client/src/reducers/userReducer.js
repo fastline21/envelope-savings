@@ -4,11 +4,14 @@ import {
     USERS_ERROR,
     CLEAR_USER_ERRORS,
     USER_LOADED,
-    LOGOUT_USER
+    LOGOUT_USER,
+    REGISTER_USER,
+    CLEAR_USER_SUCCESS
 } from './../actions/types';
 
 const initialState = {
     user: null,
+    success: null,
     loading: false,
     error: null
 };
@@ -25,6 +28,12 @@ export default (state = initialState, action) => {
         case LOGIN_USER:
             localStorage.setItem("token", action.payload.token);
             return state;
+        case REGISTER_USER:
+            return {
+                ...state,
+                success: action.payload,
+                loading: false
+            }
         case LOGOUT_USER:
             localStorage.removeItem("token");
             return {
@@ -48,6 +57,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 error: null
+            }
+        case CLEAR_USER_SUCCESS:
+            return {
+                ...state,
+                success: null
             }
         default:
             return state;

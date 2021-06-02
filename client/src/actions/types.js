@@ -6,6 +6,7 @@ export const USER_LOADING = "USER_LOADING";
 export const USERS_ERROR = "USERS_ERROR";
 export const CLEAR_USER_ERRORS = "CLEAR_USER_ERRORS";
 export const USER_LOADED = 'USER_LOADED';
+export const CLEAR_USER_SUCCESS = "CLEAR_USER_SUCCESS";
 
 // Alert
 export const SET_ALERT = "SET_ALERT";

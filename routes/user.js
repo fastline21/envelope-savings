@@ -63,14 +63,14 @@ router.post('/', async (req, res) => {
 		Envelope Savings Dev
 		`;
 		try {
-			await newUser.save();
 			await sendEmail(
 				`Envelope Savings <${process.env.MAILER_USER}>`,
 				email,
 				'Register',
 				compose
 			);
-			res.json({ message: 'Register user success.' });
+			await newUser.save();
+			res.json({ message: 'Kindly check your email to activate your account.' });
 		} catch (error) {
 			console.error('error:', error);
 			res.status(error.responseCode).json({ message: error.response });
