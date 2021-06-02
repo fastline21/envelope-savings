@@ -10,6 +10,7 @@ import Envelope from './containers/Envelope';
 import About from './containers/About';
 import Dashboard from 'containers/Dashboard';
 import Register from 'containers/Register';
+import VerifyUser from 'containers/VerifyUser';
 
 // Components
 import Header from './components/Header';
@@ -31,6 +32,7 @@ const App = () => {
 						<Route path='/about' component={About} />
 						<Route path='/register' component={Register} />
 						<Route path='/login' component={Login} />
+						<Route path='/verify/:token' component={VerifyUser} />
 						<PrivateRoute
 							exact
 							path='/dashboard'
