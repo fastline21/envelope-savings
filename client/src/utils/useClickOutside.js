@@ -8,12 +8,8 @@ const useClickOutside = (exceptionClick, handler) => {
         }
 
         const handleClick = (event) => {
-            const isExcept = exceptionClick.map((element) => element === event.target.parentNode);
-            if (isExcept) {
-                return;
-            }
-
-            if (event.target.parentNode === exceptionClick) {
+            const isExcept = exceptionClick.some((element) => element === event.target.parentNode);
+            if (isExcept || event.target.parentNode === exceptionClick) {
                 return;
             }
 
