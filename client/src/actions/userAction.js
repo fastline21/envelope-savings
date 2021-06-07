@@ -8,7 +8,9 @@ import {
     USER_LOADED,
     LOGOUT_USER,
     REGISTER_USER,
-    CLEAR_USER_SUCCESS
+    CLEAR_USER_SUCCESS,
+    VERIFY_USER,
+    CLEAR_VERIFY_MESSAGE
 } from './types';
 
 // Utils
@@ -94,6 +96,36 @@ export const registerUser = (user) => async (dispatch) => {
     }
 }
 
+export const verifyUser = (token) => async (dispatch) => {
+    setLoading(dispatch);
+
+    try {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        const res = await axios.put(`${process.env.REACT_APP_VERIFY_API}/${token}`, config);
+
+        dispatch({
+            type: VERIFY_USER,
+            payload: res.data
+        });
+
+        clearVerifyMessage(dispatch);
+    } catch (error) {
+        dispatch({
+            type: USERS_ERROR,
+            payload: {
+                statusCode: error.response.status,
+                message: error.response.data.message
+            },
+        });
+
+        clearErrors(dispatch);
+    }
+}
+
 export const logoutUser = () => (dispatch) => {
     dispatch({
         type: LOGOUT_USER,
@@ -115,5 +147,11 @@ const setLoading = (dispatch) => {
 const clearSuccess = (dispatch) => {
     dispatch({
         type: CLEAR_USER_SUCCESS
+    });
+}
+
+const clearVerifyMessage = (dispatch) => {
+    dispatch({
+        type: CLEAR_VERIFY_MESSAGE
     });
 }

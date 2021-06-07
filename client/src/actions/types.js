@@ -7,6 +7,8 @@ export const USERS_ERROR = "USERS_ERROR";
 export const CLEAR_USER_ERRORS = "CLEAR_USER_ERRORS";
 export const USER_LOADED = 'USER_LOADED';
 export const CLEAR_USER_SUCCESS = "CLEAR_USER_SUCCESS";
+export const VERIFY_USER = "VERIFY_USER";
+export const CLEAR_VERIFY_MESSAGE = 'CLEAR_VERIFY_MESSAGE';
 
 // Alert
 export const SET_ALERT = "SET_ALERT";

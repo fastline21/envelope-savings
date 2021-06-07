@@ -82,9 +82,12 @@ router.put("/verify/:token", async (req, res) => {
 		user.isVerify = true;
 		await user.save();
 
-		return res.send(user);
+		res.json({
+			message: 'You have now successfully verified your account. Please login to your account to start saving money.'
+		});
 	} catch (error) {
-		console.log(error.message);
+		cconsole.error('error:', error);
+		res.status(error.responseCode).json({ message: error.response });
 	}
 });
 

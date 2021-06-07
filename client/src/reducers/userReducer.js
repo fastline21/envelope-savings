@@ -6,14 +6,17 @@ import {
     USER_LOADED,
     LOGOUT_USER,
     REGISTER_USER,
-    CLEAR_USER_SUCCESS
-} from './../actions/types';
+    CLEAR_USER_SUCCESS,
+    VERIFY_USER,
+    CLEAR_VERIFY_MESSAGE
+} from 'actions/types';
 
 const initialState = {
     user: null,
     success: null,
     loading: false,
-    error: null
+    error: null,
+    verifyMessage: null
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -28,6 +31,11 @@ export default (state = initialState, action) => {
         case LOGIN_USER:
             localStorage.setItem("token", action.payload.token);
             return state;
+        case VERIFY_USER:
+            return {
+                ...state,
+                verifyMessage: action.payload.message
+            }
         case REGISTER_USER:
             return {
                 ...state,
@@ -62,6 +70,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 success: null
+            }
+        case CLEAR_VERIFY_MESSAGE:
+            return {
+                ...state,
+                verifyMessage: null
             }
         default:
             return state;
