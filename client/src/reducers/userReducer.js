@@ -15,7 +15,7 @@ const initialState = {
     success: null,
     loading: false,
     error: null,
-    isVerify: false
+    verifyMessage: null
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -28,9 +28,13 @@ export default (state = initialState, action) => {
                 loading: false
             }
         case LOGIN_USER:
-        case VERIFY_USER:
             localStorage.setItem("token", action.payload.token);
             return state;
+        case VERIFY_USER:
+            return {
+                ...state,
+                verifyMessage: action.payload.message
+            }
         case REGISTER_USER:
             return {
                 ...state,

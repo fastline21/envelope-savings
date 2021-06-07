@@ -104,12 +104,12 @@ export const verifyUser = (token) => async (dispatch) => {
                 "Content-Type": "application/json",
             },
         };
-        await axios.put(`${process.env.REACT_APP_VERIFY_API}/${token}`, config);
+        const res = await axios.put(`${process.env.REACT_APP_VERIFY_API}/${token}`, config);
+        
         dispatch({
-            type: VERIFY_USER
+            type: VERIFY_USER,
+            payload: res.data
         });
-
-        loadUser()(dispatch);
     } catch (error) {
         dispatch({
             type: USERS_ERROR,
