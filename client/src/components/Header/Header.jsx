@@ -40,7 +40,7 @@ const Header = ({ userState: { user, loading }, logoutUser, loadUser }) => {
 
 	return (
 		<Fragment>
-			<Navbar bg='light' expand='lg'>
+			<Navbar bg='dark' variant='dark' expand='lg'>
 				<Navbar.Brand href='/'>
 					{process.env.REACT_APP_TITLE}
 				</Navbar.Brand>
