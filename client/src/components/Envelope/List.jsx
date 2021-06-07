@@ -26,7 +26,9 @@ const List = ({
 						key={index}
 						onClick={() => setCurrentEnvelope(element._id)}
 						className={`${
-							current === element._id && 'bg-primary text-white'
+							current === element._id
+								? 'bg-primary text-white'
+								: ''
 						}`}
 					>
 						<th>{index + 1}</th>

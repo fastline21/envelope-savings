@@ -68,26 +68,27 @@ router.get("/", auth, async (req, res) => {
 // Verify user
 router.put("/verify/:token", async (req, res) => {
 	const { token } = req.params;
-	console.log(token);
-	// let user = await User.findOne({
-	// 	verificationToken: token,
-	// 	isVerify: false,
-	// });
+	let user = await User.findOne({
+		verificationToken: token,
+		isVerify: false,
+	});
 
-	// if (!user) {
-	// 	return res.status(404).json({ message: "No user found." });
-	// }
+	if (!user) {
+		return res.status(404).json({ message: "No user found." });
+	}
 
-	// try {
-	// 	user.verificationToken = "";
-	// 	user.isVerify = true;
-	// 	await user.save();
+	try {
+		user.verificationToken = "";
+		user.isVerify = true;
+		await user.save();
 
-	// 	res.json({ success: true })
-	// } catch (error) {
-	// 	cconsole.error('error:', error);
-	// 	res.status(error.responseCode).json({ message: error.response });
-	// }
+		res.json({
+			message: 'You have now successfully verified your account. Please login to your account to start saving money.'
+		});
+	} catch (error) {
+		cconsole.error('error:', error);
+		res.status(error.responseCode).json({ message: error.response });
+	}
 });
 
 module.exports = router;
