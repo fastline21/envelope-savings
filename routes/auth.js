@@ -12,14 +12,7 @@ const auth = require("./../middleware/auth");
 // Login user
 router.post("/", async (req, res) => {
 	const { email, password } = req.body;
-	if (
-		email === undefined ||
-		email === null ||
-		email === "" ||
-		password === undefined ||
-		password === null ||
-		password === ""
-	) {
+	if (!email || !password) {
 		return res
 			.status(404)
 			.json({ message: "Please fill in all the required fields." });
@@ -31,7 +24,11 @@ router.post("/", async (req, res) => {
 		}
 
 		if (!user.isVerify) {
-			return res.status(400).json({ message: 'Please verify your account by clicking the link in your email.' })
+			return res
+				.status(400)
+				.json({
+					message: 'Please verify your account by clicking the link in your email.'
+				})
 		}
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) {
