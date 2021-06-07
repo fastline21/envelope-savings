@@ -9,7 +9,8 @@ import {
     LOGOUT_USER,
     REGISTER_USER,
     CLEAR_USER_SUCCESS,
-    VERIFY_USER
+    VERIFY_USER,
+    CLEAR_VERIFY_MESSAGE
 } from './types';
 
 // Utils
@@ -105,11 +106,13 @@ export const verifyUser = (token) => async (dispatch) => {
             },
         };
         const res = await axios.put(`${process.env.REACT_APP_VERIFY_API}/${token}`, config);
-        
+
         dispatch({
             type: VERIFY_USER,
             payload: res.data
         });
+
+        clearVerifyMessage(dispatch);
     } catch (error) {
         dispatch({
             type: USERS_ERROR,
@@ -144,5 +147,11 @@ const setLoading = (dispatch) => {
 const clearSuccess = (dispatch) => {
     dispatch({
         type: CLEAR_USER_SUCCESS
+    });
+}
+
+const clearVerifyMessage = (dispatch) => {
+    dispatch({
+        type: CLEAR_VERIFY_MESSAGE
     });
 }
