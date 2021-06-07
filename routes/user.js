@@ -12,23 +12,13 @@ const { sendEmail } = require('./../config/mailer');
 // Register user
 router.post('/', async (req, res) => {
 	const { fullname, email, password, password2 } = req.body;
-	if (
-		fullname === undefined ||
-		fullname === null ||
-		fullname === '' ||
-		email === undefined ||
-		email === null ||
-		email === '' ||
-		password === undefined ||
-		password === null ||
-		password === '' ||
-		password2 === undefined ||
-		password2 === null ||
-		password2 === ''
-	) {
+	const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.CLIENT_PORT}`
+	if (!fullname || !email || !password || !password2) {
 		return res
 			.status(404)
-			.json({ message: 'Please fill in all the required fields.' });
+			.json({
+				message: 'Please fill in all the required fields.'
+			});
 	} else if (password !== password2) {
 		return res.status(400).json({ message: 'Password not match.' });
 	}
@@ -52,11 +42,11 @@ router.post('/', async (req, res) => {
 		<br /><br />
 		Please verify your email by clicking the link below.
 		<br />
-		<a href="http://localhost:3000/verify/${verificationToken}" target="_blank">Verify Account</a>
+		<a href="${baseUrl}/verify/${verificationToken}" target="_blank">Verify Account</a>
 		<br /><br />
 		If you cannot click on the link, copy and paste this link in your browser.
 		<br />
-		<a href="http://localhost:3000/verify/${verificationToken}" target="_blank">http://localhost:3000/verify/${verificationToken}</a>
+		<a href="${baseUrl}/verify/${verificationToken}" target="_blank">${baseUrl}/verify/${verificationToken}</a>
 		<br />
 		Thank you
 		<br />

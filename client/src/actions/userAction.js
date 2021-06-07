@@ -14,14 +14,14 @@ import {
 } from './types';
 
 // Utils
-import setAuthToken from "./../utils/setAuthToken";
+import setAuthToken from "utils/setAuthToken";
 
 export const loadUser = () => async (dispatch) => {
     setLoading(dispatch);
 
     try {
         setAuthToken(localStorage.token);
-        const res = await axios.get("/api/auth");
+        const res = await axios.get(`${process.env.REACT_APP_AUTH_API}`);
         dispatch({
             type: USER_LOADED,
             payload: res.data,
@@ -48,7 +48,7 @@ export const loginUser = (user) => async (dispatch) => {
                 "Content-Type": "application/json",
             },
         };
-        const res = await axios.post("/api/auth", user, config);
+        const res = await axios.post(`${process.env.REACT_APP_AUTH_API}`, user, config);
         dispatch({
             type: LOGIN_USER,
             payload: res.data,
@@ -76,7 +76,7 @@ export const registerUser = (user) => async (dispatch) => {
                 "Content-Type": "application/json",
             },
         };
-        const res = await axios.post("/api/user", user, config);
+        const res = await axios.post(`${process.env.REACT_APP_USER_API}`, user, config);
         dispatch({
             type: REGISTER_USER,
             payload: res.data,
