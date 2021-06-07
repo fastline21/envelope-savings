@@ -7,7 +7,8 @@ import {
     LOGOUT_USER,
     REGISTER_USER,
     CLEAR_USER_SUCCESS,
-    VERIFY_USER
+    VERIFY_USER,
+    CLEAR_VERIFY_MESSAGE
 } from 'actions/types';
 
 const initialState = {
@@ -69,6 +70,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 success: null
+            }
+        case CLEAR_VERIFY_MESSAGE:
+            return {
+                ...state,
+                verifyMessage: null
             }
         default:
             return state;
