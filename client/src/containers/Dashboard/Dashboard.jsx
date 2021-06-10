@@ -33,6 +33,9 @@ const Dashboard = ({
 	const [showModal, setShowModal] = useState(null);
 
 	const handleModal = (action) => {
+		if (!action && current) {
+			clearCurrent();
+		}
 		setShowModal(action);
 	};
 
@@ -59,7 +62,6 @@ const Dashboard = ({
 					showModal={showModal}
 					hideModal={() => {
 						handleModal(null);
-						clearCurrent();
 					}}
 					actionEnvelope={({ current }) =>
 						setExceptionClick([...exceptionClick, current])

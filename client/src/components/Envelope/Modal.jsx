@@ -270,7 +270,13 @@ const Modal = ({
 	}, [error]);
 
 	return (
-		<BModal show={isShow} onHide={handleClose} ref={actionEnvelopeRef}>
+		<BModal
+			show={isShow}
+			onHide={handleClose}
+			backdrop='static'
+			keyboard={false}
+			ref={actionEnvelopeRef}
+		>
 			<BModal.Header closeButton>
 				<BModal.Title>{stringCapitalized(showModal)}</BModal.Title>
 			</BModal.Header>
