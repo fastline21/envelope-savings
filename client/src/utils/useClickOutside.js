@@ -15,12 +15,13 @@ const useClickOutside = (exceptionClick, handler) => {
                 'modal-body'
             ];
 
-            const isExcept = exceptionClick.some((element) => element === event.target.parentNode) || modalList.map((element) => event.target.offsetParent.classList.contains(element)) || event.target.classList.contains('modal');
+            const isExcept = exceptionClick.some((element) => element === event.target.parentNode);
 
-            if (isExcept) {
+            const isExceptModal = modalList.map((element) => event.target.offsetParent.classList.contains(element)) || event.target.classList.contains('modal');
+
+            if (isExcept || isExceptModal.some((element) => element)) {
                 return;
             }
-
 
             if (!clickRef.current.contains(event.target)) {
                 handler();
