@@ -47,7 +47,7 @@ const Dashboard = ({
 		currentEnvelope(id);
 	};
 
-	const handleClickOutside = useClickOutside(exceptionClick, () => {
+	const handleClickOutside = useClickOutside(current, exceptionClick, () => {
 		clearCurrent();
 	});
 

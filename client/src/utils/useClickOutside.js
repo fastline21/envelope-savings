@@ -1,9 +1,13 @@
 import { useEffect, useRef } from 'react';
 
-const useClickOutside = (exceptionClick, handler) => {
+const useClickOutside = (currentEnvelope, exceptionClick, handler) => {
     const clickRef = useRef();
 
     useEffect(() => {
+        if (!currentEnvelope) {
+            return;
+        }
+
         if (!clickRef.current) {
             return;
         }
