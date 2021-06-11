@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const moment = require('moment');
 
 // Middleware
 const auth = require("./../middleware/auth");
@@ -106,6 +107,7 @@ router.patch("/:id", auth, async (req, res) => {
 		let getStatus = envelope.status;
 		let random = 0;
 		let isFound = true;
+		let dateStarted = dateFinished = '';
 		do {
 			random = getRandom(envelope["amount"]);
 			isFound = envelope["envelopes"].some((envelope) => envelope.money === random)
@@ -113,30 +115,37 @@ router.patch("/:id", auth, async (req, res) => {
 				: false;
 		} while (isFound);
 		try {
-			const totalEnvelope = envelope["envelopes"].length + 1;
-			const totalMoney = envelope["envelopes"].length >= 1 ? envelope["envelopes"].map(envelope => envelope.money).reduce((prev, next) => prev + next) + random : random;
+			const { dateStarted, amount } = envelope;
+			console.log(moment(dateStarted).add(amount - 1));
+			// const totalEnvelope = envelope["envelopes"].length + 1;
+			// const totalMoney = envelope["envelopes"].length >= 1 ? envelope["envelopes"].map(envelope => envelope.money).reduce((prev, next) => prev + next) + random : random;
 
-			if (getStatus === 'Pending') {
-				getStatus = 'Ongoing'
-			} else if (getStatus === 'Ongoing' && totalEnvelope === envelope.amount) {
-				getStatus = 'Complete';
-			}
+			// if (getStatus === 'Pending') {
+			// 	getStatus = 'Ongoing'
+			// 	dateStarted = new Date();
+			// } else if (getStatus === 'Ongoing' && totalEnvelope === envelope.amount) {
+			// 	getStatus = 'Complete';
+			// 	dateFinished = new Date();
+			// }
 
-			await envelope.updateOne({
-				envelopes: [
-					...envelope["envelopes"],
-					{
-						money: random,
-						date: new Date(),
-					},
-				],
-				latestEnvelope: { money: random, date: new Date() },
-				totalEnvelope,
-				totalMoney,
-				status: getStatus
-			});
-			envelope = await Envelope.findById(id);
-			res.json({ envelope, random });
+			// await envelope.updateOne({
+			// 	envelopes: [
+			// 		...envelope["envelopes"],
+			// 		{
+			// 			money: random,
+			// 			date: new Date(),
+			// 		},
+			// 	],
+			// 	latestEnvelope: { money: random, date: new Date() },
+			// 	totalEnvelope,
+			// 	totalMoney,
+			// 	dateStarted,
+			// 	dateFinished,
+			// 	estimatedDateFinish: 0,
+			// 	status: getStatus
+			// });
+			// envelope = await Envelope.findById(id);
+			// res.json({ envelope, random });
 		} catch (error) {
 			console.error(error.message);
 			res.status(error.responseCode).json({ message: error.response });
