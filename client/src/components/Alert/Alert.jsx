@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // Actions
-import { setAlert } from './../../actions/alertAction';
+import { setAlert } from 'actions/alertAction';
 
 const Alert = ({ setAlert, alertState: { statusCode, message } }) => {
 	const [isShow, setIsShow] = useState(false);
@@ -33,6 +33,7 @@ const Alert = ({ setAlert, alertState: { statusCode, message } }) => {
 		if (getFirstNumberStatusCode === 4) {
 			return <FontAwesomeIcon icon={['far', 'times-circle']} size='4x' />;
 		}
+
 		return <FontAwesomeIcon icon={['far', 'check-circle']} size='4x' />;
 	};
 

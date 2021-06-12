@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 const CurrentNumber = ({ roll }) => {
-	return <h1 className='mb-0'>{roll}</h1>;
+	return <Fragment>{roll}</Fragment>;
 };
 
 export default CurrentNumber;

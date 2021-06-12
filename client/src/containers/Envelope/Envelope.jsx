@@ -3,6 +3,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
+import moment from 'moment';
 
 // Actions
 import {
@@ -39,6 +40,20 @@ const Envelope = ({
 
 	const history = useHistory();
 
+	const isRolled = () => {
+		const { latestEnvelope } = envelope;
+
+		if (!latestEnvelope) {
+			return false;
+		}
+
+		const today = moment().format('YYYY-MM-DD');
+		const latestEnvelopeDate = moment(latestEnvelope.date).format(
+			'YYYY-MM-DD'
+		);
+		return moment(today).isSame(latestEnvelopeDate);
+	};
+
 	useEffect(() => {
 		currentEnvelope(id);
 		getEnvelope(id);
@@ -55,9 +70,11 @@ const Envelope = ({
 		}
 
 		if (error) {
-			clearCurrent();
 			setAlert({ ...error });
-			history.push('/dashboard');
+			if (error.statusCode === 404) {
+				clearCurrent();
+				history.push('/dashboard');
+			}
 		}
 
 		// eslint-disable-next-line
@@ -78,29 +95,34 @@ const Envelope = ({
 				</Col>
 				<Col xl={3} lg={3} md={12} sm={12}>
 					<div className='text-center envelope-current-number'>
-						{loading ? (
-							<Spinner
-								animation='grow'
-								variant='primary'
-								role='status'
-								style={{
-									width: '2.92rem',
-									height: '2.92rem',
-								}}
-							>
-								<span className='sr-only'>Loading...</span>
-							</Spinner>
-						) : (
-							<CurrentNumber
-								roll={
-									(envelope.latestEnvelope &&
-										envelope.latestEnvelope.money) ||
-									roll
-								}
-							/>
-						)}
+						<h1>
+							{loading ? (
+								<Spinner
+									animation='grow'
+									variant='primary'
+									role='status'
+									style={{
+										width: '2.92rem',
+										height: '2.92rem',
+									}}
+								>
+									<span className='sr-only'>Loading...</span>
+								</Spinner>
+							) : (
+								<CurrentNumber
+									roll={
+										(envelope.latestEnvelope &&
+											envelope.latestEnvelope.money) ||
+										roll
+									}
+								/>
+							)}
+						</h1>
 					</div>
-					<Roll rollNumber={() => rollNumber(id)} />
+					<Roll
+						isRolled={isRolled()}
+						rollNumber={() => rollNumber(id)}
+					/>
 				</Col>
 			</Row>
 			<hr />

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 
-const Roll = ({ rollNumber }) => {
-	// TODO: Prevent user to roll if already roll that day
+const Roll = ({ isRolled, rollNumber }) => {
 	return (
 		<Button
-			variant='primary'
+			variant={isRolled ? 'secondary' : 'primary'}
 			size='lg'
 			className='w-100 my-3'
+			disabled={isRolled}
 			onClick={() => rollNumber()}
 		>
 			Roll

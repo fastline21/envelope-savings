@@ -5,7 +5,7 @@ const TotalMoney = ({ totalMoney }) => {
 		<p className='text-center'>
 			<strong>Total Money</strong>
 			<br />
-			{totalMoney.toLocaleString()}
+			{totalMoney.toLocaleString(undefined, { minimumFractionDigits: 2 })}
 		</p>
 	);
 };

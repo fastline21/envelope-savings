@@ -66,7 +66,7 @@ const Modal = ({
 					<BModal.Body>
 						<Form.Group>
 							<Form.Label>
-								Are you sure you want to delete {purpose}
+								Are you sure you want to delete {purpose}?
 							</Form.Label>
 						</Form.Group>
 					</BModal.Body>
@@ -256,6 +256,7 @@ const Modal = ({
 				goalMoney: envelope.goalMoney,
 			});
 		}
+
 		// eslint-disable-next-line
 	}, [envelope]);
 
@@ -275,6 +276,7 @@ const Modal = ({
 			onHide={handleClose}
 			backdrop='static'
 			keyboard={false}
+			animation={false}
 			ref={actionEnvelopeRef}
 		>
 			<BModal.Header closeButton>

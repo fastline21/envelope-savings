@@ -19,31 +19,25 @@ const Table = ({ envelope }) => {
 		for (rollNumber; envelope.amount >= rollNumber; rollNumber++) {
 			render.push(
 				<Col xs={2} sm={2} md={1} lg={1} xl={1} key={rollNumber}>
-					<OverlayTrigger
-						key='top'
-						placement='top'
-						overlay={
-							isRollNumber(rollNumber) ? (
+					{isRollNumber(rollNumber) ? (
+						<OverlayTrigger
+							key='top'
+							placement='top'
+							overlay={
 								<Tooltip>
 									{moment(getDate(rollNumber)).format(
 										'MMMM DD, YYYY'
 									)}
 								</Tooltip>
-							) : (
-								<span></span>
-							)
-						}
-					>
-						<p
-							className={`roll-number text-center${
-								isRollNumber(rollNumber)
-									? ' text-white bg-dark'
-									: ''
-							}`}
+							}
 						>
-							{rollNumber}
-						</p>
-					</OverlayTrigger>
+							<p className='roll-number text-center text-white bg-success'>
+								{rollNumber}
+							</p>
+						</OverlayTrigger>
+					) : (
+						<p className='roll-number text-center'>{rollNumber}</p>
+					)}
 				</Col>
 			);
 		}
