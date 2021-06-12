@@ -50,7 +50,7 @@ const EnvelopeSchema = mongoose.Schema({
 	dateFinished: {
 		type: Date,
 	},
-	estimatedDateFinish: {
+	scheduledFinishDate: {
 		type: Date,
 	},
 	totalMoney: {

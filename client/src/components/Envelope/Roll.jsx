@@ -7,7 +7,7 @@ const Roll = ({ rollNumber }) => {
 		<Button
 			variant='primary'
 			size='lg'
-			className='w-100 mt-3'
+			className='w-100 my-3'
 			onClick={() => rollNumber()}
 		>
 			Roll

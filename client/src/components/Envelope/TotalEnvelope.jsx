@@ -1,8 +1,12 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 const TotalEnvelope = ({ totalEnvelope }) => {
 	return (
-		<Fragment>Total Envelope: {totalEnvelope.toLocaleString()}</Fragment>
+		<p className='text-center'>
+			<strong>Total Envelope</strong>
+			<br />
+			{totalEnvelope.toLocaleString()}
+		</p>
 	);
 };
 

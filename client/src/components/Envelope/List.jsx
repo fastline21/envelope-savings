@@ -10,14 +10,20 @@ const List = ({
 	listRef,
 }) => {
 	return envelopes.length !== 0 ? (
-		<Table responsive hover className='envelope-list'>
+		<Table
+			responsive
+			hover
+			borderless
+			variant='dark'
+			className='envelope-list'
+		>
 			<thead>
 				<tr>
-					<th>#</th>
-					<th>Purpose</th>
-					<th>Goal Money</th>
-					<th>Status</th>
-					<th>Date</th>
+					<th scope='col'>#</th>
+					<th scope='col'>Purpose</th>
+					<th scope='col'>Goal Money</th>
+					<th scope='col'>Status</th>
+					<th scope='col'>Date</th>
 				</tr>
 			</thead>
 			<tbody ref={listRef}>
@@ -31,12 +37,14 @@ const List = ({
 								: ''
 						}`}
 					>
-						<th>{index + 1}</th>
+						<th scope='row'>{index + 1}</th>
 						<td>{element.purpose}</td>
 						<td>{element.goalMoney.toLocaleString()}</td>
 						<td>{element.status}</td>
 						<td>
-							{moment(element.dateCreated).format('MMMM DD YYYY')}
+							{moment(element.dateCreated).format(
+								'MMMM DD, YYYY'
+							)}
 						</td>
 					</tr>
 				))}

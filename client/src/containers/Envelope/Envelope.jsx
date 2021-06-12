@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
@@ -9,6 +9,7 @@ import {
 	getEnvelope,
 	rollNumber,
 	currentEnvelope,
+	clearCurrent,
 } from 'actions/envelopeAction';
 import { setAlert } from 'actions/alertAction';
 
@@ -20,6 +21,9 @@ import {
 	TotalMoney,
 	GoalMoney,
 	TotalEnvelope,
+	DateStarted,
+	DateFinished,
+	ScheduledFinishDate,
 } from 'components/Envelope';
 import PreLoader from 'components/PreLoader';
 
@@ -28,9 +32,12 @@ const Envelope = ({
 	rollNumber,
 	setAlert,
 	currentEnvelope,
-	envelopeState: { envelope, roll, loading },
+	clearCurrent,
+	envelopeState: { envelope, roll, loading, error },
 }) => {
 	const { id } = useParams();
+
+	const history = useHistory();
 
 	useEffect(() => {
 		currentEnvelope(id);
@@ -43,11 +50,18 @@ const Envelope = ({
 		if (envelope && envelope.status === 'Complete') {
 			setAlert({
 				statusCode: 200,
-				message: 'Congrats! You complete your goal!',
+				message: 'Congrats! You complete your goal.',
 			});
 		}
+
+		if (error) {
+			clearCurrent();
+			setAlert({ ...error });
+			history.push('/dashboard');
+		}
+
 		// eslint-disable-next-line
-	}, [envelope]);
+	}, [envelope, error]);
 
 	if (!envelope) {
 		return <PreLoader />;
@@ -89,22 +103,27 @@ const Envelope = ({
 					<Roll rollNumber={() => rollNumber(id)} />
 				</Col>
 			</Row>
+			<hr />
 			<Row>
-				<Col xl={9} lg={9} md={12} sm={12}>
-					<hr />
-					<Row>
-						<Col>
-							<TotalMoney totalMoney={envelope.totalMoney || 0} />
-						</Col>
-						<Col>
-							<GoalMoney goalMoney={envelope.goalMoney} />
-						</Col>
-						<Col>
-							<TotalEnvelope
-								totalEnvelope={envelope.envelopes.length}
-							/>
-						</Col>
-					</Row>
+				<Col>
+					<TotalMoney totalMoney={envelope.totalMoney || 0} />
+				</Col>
+				<Col>
+					<GoalMoney goalMoney={envelope.goalMoney} />
+				</Col>
+				<Col>
+					<TotalEnvelope totalEnvelope={envelope.envelopes.length} />
+				</Col>
+				<Col>
+					<DateStarted dateStarted={envelope.dateStarted} />
+				</Col>
+				<Col>
+					<DateFinished dateFinished={envelope.dateFinished} />
+				</Col>
+				<Col>
+					<ScheduledFinishDate
+						scheduledFinishDate={envelope.scheduledFinishDate}
+					/>
 				</Col>
 			</Row>
 		</Container>
@@ -117,6 +136,7 @@ Envelope.propTypes = {
 	rollNumber: PropTypes.func.isRequired,
 	setAlert: PropTypes.func.isRequired,
 	currentEnvelope: PropTypes.func.isRequired,
+	clearCurrent: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -128,4 +148,5 @@ export default connect(mapStateToProps, {
 	rollNumber,
 	setAlert,
 	currentEnvelope,
+	clearCurrent,
 })(Envelope);
