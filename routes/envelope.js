@@ -131,7 +131,7 @@ router.patch("/:id", auth, async (req, res) => {
 		try {
 			const totalEnvelope = envelope["envelopes"].length + 1;
 			const totalMoney = envelope["envelopes"].length >= 1 ? envelope["envelopes"].map(envelope => envelope.money).reduce((prev, next) => prev + next) + random : random;
-			const scheduledFinishDate = moment('06/21/2021', 'MM/DD/YYYY').add(envelope.amount - totalEnvelope, 'days');
+			const scheduledFinishDate = moment().add(envelope.amount - totalEnvelope, 'days');
 
 			if (getStatus === 'Pending') {
 				getStatus = 'Ongoing'
