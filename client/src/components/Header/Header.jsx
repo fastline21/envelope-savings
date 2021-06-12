@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -39,8 +39,8 @@ const Header = ({ userState: { user, loading }, logoutUser, loadUser }) => {
 	}
 
 	return (
-		<Fragment>
-			<Navbar bg='light' expand='lg'>
+		<Navbar bg='dark' variant='dark' expand='lg'>
+			<Container>
 				<Navbar.Brand href='/'>
 					{process.env.REACT_APP_TITLE}
 				</Navbar.Brand>
@@ -72,8 +72,8 @@ const Header = ({ userState: { user, loading }, logoutUser, loadUser }) => {
 						)}
 					</Nav>
 				</Navbar.Collapse>
-			</Navbar>
-		</Fragment>
+			</Container>
+		</Navbar>
 	);
 };
 

@@ -33,10 +33,12 @@ const Login = ({ loginUser, setAlert, userState: { user, error } }) => {
 				message: 'Please fill in all the required fields.',
 			});
 		}
+
 		loginUser({
 			email,
 			password,
 		});
+		setFormData(initialFormData);
 	};
 
 	useEffect(() => {

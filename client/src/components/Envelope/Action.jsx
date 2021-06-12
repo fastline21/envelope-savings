@@ -15,7 +15,7 @@ const Action = ({ envelopeState: { current }, showModal, actionEnvelope }) => {
 	return (
 		<div id='action' ref={actionEnvelopeRef}>
 			<Button
-				variant='primary'
+				variant={!current ? 'secondary' : 'primary'}
 				size='lg'
 				block
 				onClick={() => showModal('view')}
@@ -24,7 +24,7 @@ const Action = ({ envelopeState: { current }, showModal, actionEnvelope }) => {
 				View
 			</Button>
 			<Button
-				variant='primary'
+				variant={current ? 'secondary' : 'primary'}
 				size='lg'
 				block
 				onClick={() => showModal('add')}
@@ -33,7 +33,7 @@ const Action = ({ envelopeState: { current }, showModal, actionEnvelope }) => {
 				Add
 			</Button>
 			<Button
-				variant='primary'
+				variant={!current ? 'secondary' : 'primary'}
 				size='lg'
 				block
 				onClick={() => showModal('edit')}
@@ -42,7 +42,7 @@ const Action = ({ envelopeState: { current }, showModal, actionEnvelope }) => {
 				Edit
 			</Button>
 			<Button
-				variant='primary'
+				variant={!current ? 'secondary' : 'primary'}
 				size='lg'
 				block
 				onClick={() => showModal('delete')}

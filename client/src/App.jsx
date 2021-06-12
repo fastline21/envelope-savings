@@ -16,6 +16,7 @@ import VerifyUser from 'containers/VerifyUser';
 import Header from './components/Header';
 import Alert from './components/Alert';
 import NotFound from 'components/NotFound';
+import 'components/FontAwesomeIcons';
 
 // Routes
 import PrivateRoute from './routes/PrivateRoute';

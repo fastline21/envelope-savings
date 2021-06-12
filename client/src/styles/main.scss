@@ -11,3 +11,16 @@
 		}
 	}
 }
+
+.close {
+	color: #808080;
+	text-shadow: none;
+
+	&:hover {
+		color: #fff;
+	}
+}
+
+.table-dark {
+	--bs-table-bg: transparent;
+}

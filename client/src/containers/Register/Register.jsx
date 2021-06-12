@@ -56,6 +56,7 @@ const Register = ({
 			password,
 			password2,
 		});
+		setFormData(initialFormData);
 	};
 
 	useEffect(() => {
