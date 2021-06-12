@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
+import moment from 'moment';
 
 // Actions
 import {
 	getEnvelope,
 	rollNumber,
 	currentEnvelope,
+	clearCurrent,
 } from 'actions/envelopeAction';
 import { setAlert } from 'actions/alertAction';
 
@@ -20,6 +22,9 @@ import {
 	TotalMoney,
 	GoalMoney,
 	TotalEnvelope,
+	DateStarted,
+	DateFinished,
+	ScheduledFinishDate,
 } from 'components/Envelope';
 import PreLoader from 'components/PreLoader';
 
@@ -28,9 +33,26 @@ const Envelope = ({
 	rollNumber,
 	setAlert,
 	currentEnvelope,
-	envelopeState: { envelope, roll, loading },
+	clearCurrent,
+	envelopeState: { envelope, roll, loading, error },
 }) => {
 	const { id } = useParams();
+
+	const history = useHistory();
+
+	const isRolled = () => {
+		const { latestEnvelope } = envelope;
+
+		if (!latestEnvelope) {
+			return false;
+		}
+
+		const today = moment().format('YYYY-MM-DD');
+		const latestEnvelopeDate = moment(latestEnvelope.date).format(
+			'YYYY-MM-DD'
+		);
+		return moment(today).isSame(latestEnvelopeDate);
+	};
 
 	useEffect(() => {
 		currentEnvelope(id);
@@ -43,11 +65,20 @@ const Envelope = ({
 		if (envelope && envelope.status === 'Complete') {
 			setAlert({
 				statusCode: 200,
-				message: 'Congrats! You complete your goal!',
+				message: 'Congrats! You complete your goal.',
 			});
 		}
+
+		if (error) {
+			setAlert({ ...error });
+			if (error.statusCode === 404) {
+				clearCurrent();
+				history.push('/dashboard');
+			}
+		}
+
 		// eslint-disable-next-line
-	}, [envelope]);
+	}, [envelope, error]);
 
 	if (!envelope) {
 		return <PreLoader />;
@@ -64,47 +95,57 @@ const Envelope = ({
 				</Col>
 				<Col xl={3} lg={3} md={12} sm={12}>
 					<div className='text-center envelope-current-number'>
-						{loading ? (
-							<Spinner
-								animation='grow'
-								variant='primary'
-								role='status'
-								style={{
-									width: '2.92rem',
-									height: '2.92rem',
-								}}
-							>
-								<span className='sr-only'>Loading...</span>
-							</Spinner>
-						) : (
-							<CurrentNumber
-								roll={
-									(envelope.latestEnvelope &&
-										envelope.latestEnvelope.money) ||
-									roll
-								}
-							/>
-						)}
+						<h1>
+							{loading ? (
+								<Spinner
+									animation='grow'
+									variant='primary'
+									role='status'
+									style={{
+										width: '2.92rem',
+										height: '2.92rem',
+									}}
+								>
+									<span className='sr-only'>Loading...</span>
+								</Spinner>
+							) : (
+								<CurrentNumber
+									roll={
+										(envelope.latestEnvelope &&
+											envelope.latestEnvelope.money) ||
+										roll
+									}
+								/>
+							)}
+						</h1>
 					</div>
-					<Roll rollNumber={() => rollNumber(id)} />
+					<Roll
+						isRolled={isRolled()}
+						rollNumber={() => rollNumber(id)}
+					/>
 				</Col>
 			</Row>
+			<hr />
 			<Row>
-				<Col xl={9} lg={9} md={12} sm={12}>
-					<hr />
-					<Row>
-						<Col>
-							<TotalMoney totalMoney={envelope.totalMoney || 0} />
-						</Col>
-						<Col>
-							<GoalMoney goalMoney={envelope.goalMoney} />
-						</Col>
-						<Col>
-							<TotalEnvelope
-								totalEnvelope={envelope.envelopes.length}
-							/>
-						</Col>
-					</Row>
+				<Col>
+					<TotalMoney totalMoney={envelope.totalMoney || 0} />
+				</Col>
+				<Col>
+					<GoalMoney goalMoney={envelope.goalMoney} />
+				</Col>
+				<Col>
+					<TotalEnvelope totalEnvelope={envelope.envelopes.length} />
+				</Col>
+				<Col>
+					<DateStarted dateStarted={envelope.dateStarted} />
+				</Col>
+				<Col>
+					<DateFinished dateFinished={envelope.dateFinished} />
+				</Col>
+				<Col>
+					<ScheduledFinishDate
+						scheduledFinishDate={envelope.scheduledFinishDate}
+					/>
 				</Col>
 			</Row>
 		</Container>
@@ -117,6 +158,7 @@ Envelope.propTypes = {
 	rollNumber: PropTypes.func.isRequired,
 	setAlert: PropTypes.func.isRequired,
 	currentEnvelope: PropTypes.func.isRequired,
+	clearCurrent: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -128,4 +170,5 @@ export default connect(mapStateToProps, {
 	rollNumber,
 	setAlert,
 	currentEnvelope,
+	clearCurrent,
 })(Envelope);

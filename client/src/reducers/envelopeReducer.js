@@ -8,7 +8,8 @@ import {
     ROLL_NUMBER,
     CLEAR_CURRENT,
     EDIT_ENVELOPE,
-    DELETE_ENVELOPE
+    DELETE_ENVELOPE,
+    CLEAR_ENVELOPE_ERRORS
 } from "./../actions/types";
 
 const initialState = {
@@ -63,6 +64,11 @@ export default (state = initialState, action) => {
                 ...state,
                 current: null,
                 envelope: null
+            }
+        case CLEAR_ENVELOPE_ERRORS:
+            return {
+                ...state,
+                error: null
             }
         case ROLL_NUMBER:
             return {

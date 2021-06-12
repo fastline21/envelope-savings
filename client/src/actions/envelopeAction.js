@@ -46,6 +46,7 @@ export const getEnvelope = (id) => async (dispatch) => {
             payload: res.data,
         });
     } catch (error) {
+        console.log(error);
         dispatch({
             type: ENVELOPES_ERROR,
             payload: {

@@ -1,7 +1,13 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 const GoalMoney = ({ goalMoney }) => {
-	return <Fragment>Goal Money: {goalMoney.toLocaleString()}</Fragment>;
+	return (
+		<p className='text-center'>
+			<strong>Goal Money</strong>
+			<br />
+			{goalMoney.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+		</p>
+	);
 };
 
 export default GoalMoney;

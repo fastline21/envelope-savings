@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const moment = require('moment');
 
 // Middleware
 const auth = require("./../middleware/auth");
@@ -26,10 +27,13 @@ router.get("/:id", auth, async (req, res) => {
 	const { id } = req.params;
 	try {
 		const envelope = await Envelope.findById(id);
+		if (!envelope) {
+			return res.status(404).json({ message: 'Envelope not found.' });
+		}
 		res.json(envelope);
 	} catch (error) {
 		console.error('error:', error);
-		res.status(error.responseCode).json({ message: error.response });
+		res.status(400).json({ message: 'Incorrect Envelope.' });
 	}
 });
 
@@ -75,7 +79,7 @@ router.put("/:id", auth, async (req, res) => {
 		const getStatus = envelope.status;
 
 		if (getStatus !== 'Pending') {
-			return res.status(403).json({ message: 'Nothing' });
+			return res.status(403).json({ message: 'You cannot update an envelope that has ongoing status.' });
 		}
 
 		let goalMoney = 0;
@@ -106,15 +110,28 @@ router.patch("/:id", auth, async (req, res) => {
 		let getStatus = envelope.status;
 		let random = 0;
 		let isFound = true;
+
+		if (envelope.latestEnvelope) {
+			const today = moment().format("YYYY-MM-DD");
+			const latestEnvelopeDate = moment(envelope.latestEnvelope.date).format("YYYY-MM-DD");
+			const isLatestDateToday = moment(today).isSame(latestEnvelopeDate);
+			
+			if (isLatestDateToday) {
+				return res.status(400).json({ message: "You cannot roll a number today, please come tomorrow to roll a number." });
+			}
+		}
+
 		do {
 			random = getRandom(envelope["amount"]);
 			isFound = envelope["envelopes"].some((envelope) => envelope.money === random)
 				? true
 				: false;
 		} while (isFound);
+
 		try {
 			const totalEnvelope = envelope["envelopes"].length + 1;
 			const totalMoney = envelope["envelopes"].length >= 1 ? envelope["envelopes"].map(envelope => envelope.money).reduce((prev, next) => prev + next) + random : random;
+			const scheduledFinishDate = moment('06/21/2021', 'MM/DD/YYYY').add(envelope.amount - totalEnvelope, 'days');
 
 			if (getStatus === 'Pending') {
 				getStatus = 'Ongoing'
@@ -133,6 +150,9 @@ router.patch("/:id", auth, async (req, res) => {
 				latestEnvelope: { money: random, date: new Date() },
 				totalEnvelope,
 				totalMoney,
+				dateStarted: envelope.dateStarted ? envelope.dateStarted : new Date(),
+				dateFinished: getStatus === 'Complete' ? new Date() : '',
+				scheduledFinishDate,
 				status: getStatus
 			});
 			envelope = await Envelope.findById(id);

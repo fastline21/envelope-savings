@@ -7,6 +7,9 @@ import CurrentNumber from './CurrentNumber';
 import TotalMoney from './TotalMoney';
 import GoalMoney from './GoalMoney';
 import TotalEnvelope from './TotalEnvelope';
+import DateStarted from './DateStarted';
+import DateFinished from './DateFinished';
+import ScheduledFinishDate from './ScheduledFinishDate';
 
 export {
     List,
@@ -17,5 +20,8 @@ export {
     CurrentNumber,
     TotalMoney,
     GoalMoney,
-    TotalEnvelope
+    TotalEnvelope,
+    DateStarted,
+    DateFinished,
+    ScheduledFinishDate
 };

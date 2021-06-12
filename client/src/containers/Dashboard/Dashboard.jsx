@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 // Components
-import { List, Action, Modal } from './../../components/Envelope';
+import { List, Action, Modal } from 'components/Envelope';
 import PreLoader from 'components/PreLoader';
 
 // Actions
@@ -24,6 +24,7 @@ const Dashboard = ({
 	envelopeState: { envelopes, current },
 }) => {
 	const [exceptionClick, setExceptionClick] = useState([]);
+
 	useEffect(() => {
 		getAllEnvelopes();
 
@@ -33,6 +34,10 @@ const Dashboard = ({
 	const [showModal, setShowModal] = useState(null);
 
 	const handleModal = (action) => {
+		if (!action && current) {
+			clearCurrent();
+		}
+
 		setShowModal(action);
 	};
 
@@ -44,7 +49,7 @@ const Dashboard = ({
 		currentEnvelope(id);
 	};
 
-	const handleClickOutside = useClickOutside(exceptionClick, () => {
+	const handleClickOutside = useClickOutside(current, exceptionClick, () => {
 		clearCurrent();
 	});
 
@@ -59,7 +64,6 @@ const Dashboard = ({
 					showModal={showModal}
 					hideModal={() => {
 						handleModal(null);
-						clearCurrent();
 					}}
 					actionEnvelope={({ current }) =>
 						setExceptionClick([...exceptionClick, current])

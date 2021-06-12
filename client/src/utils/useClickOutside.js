@@ -1,15 +1,29 @@
 import { useEffect, useRef } from 'react';
 
-const useClickOutside = (exceptionClick, handler) => {
+const useClickOutside = (currentEnvelope, exceptionClick, handler) => {
     const clickRef = useRef();
+
     useEffect(() => {
+        if (!currentEnvelope) {
+            return;
+        }
+
         if (!clickRef.current) {
             return;
         }
 
         const handleClick = (event) => {
+            const modalList = [
+                'modal-open',
+                'modal-content',
+                'modal-body'
+            ];
+
             const isExcept = exceptionClick.some((element) => element === event.target.parentNode);
-            if (isExcept || event.target.parentNode === exceptionClick) {
+
+            const isExceptModal = modalList.map((element) => event.target.offsetParent.classList.contains(element)) || event.target.classList.contains('modal');
+
+            if (isExcept || isExceptModal.some((element) => element)) {
                 return;
             }
 
