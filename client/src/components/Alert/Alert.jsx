@@ -15,8 +15,8 @@ const Alert = ({ setAlert, alertState: { statusCode, message } }) => {
 	};
 
 	const handleClose = () => {
-		setAlert({});
 		setIsShow(false);
+		setAlert({});
 	};
 
 	const getFirstNumberStatusCode = parseInt(statusCode.toString().charAt(0));
@@ -45,7 +45,13 @@ const Alert = ({ setAlert, alertState: { statusCode, message } }) => {
 	}, [statusCode]);
 
 	return (
-		<Modal show={isShow} onHide={handleClose}>
+		<Modal
+			show={isShow}
+			onHide={handleClose}
+			animation={false}
+			backdrop='static'
+			keyboard={false}
+		>
 			<Modal.Header className={`${modalHeaderStyle()} border-bottom-0`}>
 				<Modal.Title className='mx-auto'>
 					<ModalHeaderIcon />
