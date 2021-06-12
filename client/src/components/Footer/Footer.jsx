@@ -16,7 +16,9 @@ const Footer = () => {
 					<p>{today}</p>
 				</Col>
 				<Col>
-					<p className='text-end'>v{process.env.VERSION || '0.00'}</p>
+					<p className='text-end'>
+						v{process.env.REACT_APP_VERSION || '0.00'}
+					</p>
 				</Col>
 			</Row>
 		</Container>
