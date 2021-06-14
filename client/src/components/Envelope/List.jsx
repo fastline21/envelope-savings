@@ -10,8 +10,8 @@ const List = ({
 	listRef,
 }) => {
 	return envelopes.length !== 0 ? (
-		<Table responsive borderless variant='dark' className='envelope-list'>
-			<thead>
+		<Table responsive borderless className='envelope-list'>
+			<thead className='bg-secondary'>
 				<tr>
 					<th scope='col'>#</th>
 					<th scope='col'>Purpose</th>

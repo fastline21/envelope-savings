@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -10,7 +10,10 @@ import { logoutUser, loadUser } from 'actions/userAction';
 import PreLoader from 'components/PreLoader';
 
 const Header = ({ userState: { user, loading }, logoutUser, loadUser }) => {
+	const location = useLocation();
+
 	const [isLoading, setIsLoading] = useState(null);
+	const [navExpanded, setNavExpanded] = useState(false);
 
 	if (localStorage.token && isLoading === null && !user) {
 		setIsLoading(true);
@@ -34,12 +37,24 @@ const Header = ({ userState: { user, loading }, logoutUser, loadUser }) => {
 		// eslint-disable-next-line
 	}, [loading]);
 
+	useEffect(() => {
+		setNavExpanded(false);
+
+		// eslint-disable-next-line
+	}, [location]);
+
 	if (isLoading) {
 		return <PreLoader />;
 	}
 
 	return (
-		<Navbar bg='dark' variant='dark' expand='lg'>
+		<Navbar
+			bg='dark'
+			variant='dark'
+			expand='lg'
+			onToggle={setNavExpanded}
+			expanded={navExpanded}
+		>
 			<Container>
 				<Navbar.Brand href='/'>
 					{process.env.REACT_APP_TITLE}

@@ -21,7 +21,7 @@ const useClickOutside = (currentEnvelope, exceptionClick, handler) => {
 
             const isExcept = exceptionClick.some((element) => element === event.target.parentNode);
 
-            const isExceptModal = modalList.map((element) => event.target.offsetParent.classList.contains(element)) || event.target.classList.contains('modal');
+            const isExceptModal = modalList.map((element) => event.target.offsetParent && event.target.offsetParent.classList.contains(element)) || event.target.classList.contains('modal');
 
             if (isExcept || isExceptModal.some((element) => element)) {
                 return;

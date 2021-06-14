@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 
-const Roll = ({ isRolled, rollNumber }) => {
+const Roll = ({ isRolled, isCompleted, rollNumber }) => {
 	return (
 		<Button
-			variant={isRolled ? 'secondary' : 'primary'}
+			variant={isRolled || isCompleted ? 'secondary' : 'primary'}
 			size='lg'
 			className='w-100 my-3'
-			disabled={isRolled}
+			disabled={isRolled || isCompleted}
 			onClick={() => rollNumber()}
 		>
 			Roll

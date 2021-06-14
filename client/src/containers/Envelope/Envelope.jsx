@@ -122,6 +122,9 @@ const Envelope = ({
 					<Roll
 						isRolled={isRolled()}
 						rollNumber={() => rollNumber(id)}
+						isCompleted={
+							envelope.status === 'Complete' ? true : false
+						}
 					/>
 				</Col>
 			</Row>

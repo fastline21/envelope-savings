@@ -79,7 +79,7 @@ router.put("/:id", auth, async (req, res) => {
 		const getStatus = envelope.status;
 
 		if (getStatus !== 'Pending') {
-			return res.status(403).json({ message: 'You cannot update an envelope that has ongoing status.' });
+			return res.status(403).json({ message: 'You cannot update an envelope that has ongoing or complete status.' });
 		}
 
 		let goalMoney = 0;
@@ -115,7 +115,7 @@ router.patch("/:id", auth, async (req, res) => {
 			const today = moment().format("YYYY-MM-DD");
 			const latestEnvelopeDate = moment(envelope.latestEnvelope.date).format("YYYY-MM-DD");
 			const isLatestDateToday = moment(today).isSame(latestEnvelopeDate);
-			
+
 			if (isLatestDateToday) {
 				return res.status(400).json({ message: "You cannot roll a number today, please come tomorrow to roll a number." });
 			}
