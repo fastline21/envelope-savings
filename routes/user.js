@@ -38,13 +38,13 @@ router.post('/', async (req, res) => {
 			verificationToken,
 		});
 		const compose = `
-		Thank you for register in Envelope Savings.
+		Thank you for registering in Envelope Savings.
 		<br /><br />
-		Please verify your email by clicking the link below.
+		Please verify your email address by clicking the link below.
 		<br />
 		<a href="${baseUrl}/verify/${verificationToken}" target="_blank">Verify Account</a>
 		<br /><br />
-		If you cannot click on the link, copy and paste this link in your browser.
+		If you are unable click on the link, copy and paste this link in your browser.
 		<br />
 		<a href="${baseUrl}/verify/${verificationToken}" target="_blank">${baseUrl}/verify/${verificationToken}</a>
 		<br />
