@@ -16,6 +16,7 @@ const Table = ({ envelope }) => {
 			);
 			return dateRoll.date;
 		};
+
 		for (rollNumber; envelope.amount >= rollNumber; rollNumber++) {
 			render.push(
 				<Col xs={2} sm={2} md={1} lg={1} xl={1} key={rollNumber}>
