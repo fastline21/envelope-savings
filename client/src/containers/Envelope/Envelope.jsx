@@ -34,7 +34,7 @@ const Envelope = ({
 	setAlert,
 	currentEnvelope,
 	clearCurrent,
-	envelopeState: { envelope, roll, loading, error },
+	envelopeState: { envelope, roll, loading, error, current },
 }) => {
 	const { id } = useParams();
 
@@ -55,7 +55,7 @@ const Envelope = ({
 	};
 
 	useEffect(() => {
-		currentEnvelope(id);
+		// currentEnvelope(id);
 		getEnvelope(id);
 
 		// eslint-disable-next-line
@@ -77,8 +77,12 @@ const Envelope = ({
 			}
 		}
 
+		if (current) {
+			clearCurrent();
+		}
+
 		// eslint-disable-next-line
-	}, [envelope, error]);
+	}, [envelope, error, current]);
 
 	if (!envelope) {
 		return <PreLoader />;
